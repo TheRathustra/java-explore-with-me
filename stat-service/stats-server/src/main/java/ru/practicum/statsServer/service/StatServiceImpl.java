@@ -6,7 +6,6 @@ import ru.practicum.statsServer.model.Hit;
 import ru.practicum.statsServer.repository.StatRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

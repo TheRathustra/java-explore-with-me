@@ -13,14 +13,14 @@ import java.util.List;
 public interface StatRepository extends JpaRepository<Hit, Long> {
 
     @Query("SELECT h from Hit h where h.timestamp between :start and :end order by h.id")
-    public List<Hit> getStatsBetweenDates(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    List<Hit> getStatsBetweenDates(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
     @Query("SELECT distinct h from Hit h where h.timestamp between :start and :end order by h.id")
-    public List<Hit> getStatsBetweenDatesUnique(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    List<Hit> getStatsBetweenDatesUnique(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query("SELECT h from Hit h where h.uri in :uris and h.timestamp between :start and :end order by h.id")
-    public List<Hit> getStatsBetweenDatesUriInCollection(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, @Param("uris") List<String> uris);
+    List<Hit> getStatsBetweenDatesUriInCollection(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, @Param("uris") List<String> uris);
 
     @Query("SELECT distinct h from Hit h where h.uri in :uris and h.timestamp between :start and :end order by h.id")
-    public List<Hit> getStatsBetweenDatesUriInCollectionUnique(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, @Param("uris") List<String> uris);
+    List<Hit> getStatsBetweenDatesUriInCollectionUnique(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, @Param("uris") List<String> uris);
 
 }
