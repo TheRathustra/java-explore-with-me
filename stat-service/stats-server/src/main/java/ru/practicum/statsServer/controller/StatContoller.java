@@ -2,7 +2,7 @@ package ru.practicum.statsServer.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.statsDto.dto.HitDto;
@@ -22,7 +22,7 @@ public class StatContoller {
 
     @PostMapping(path = "/hit")
     public ResponseEntity<Object> addHit(@RequestBody HitDto hitDto) {
-        ResponseEntity<Object> response = new ResponseEntity<>(HttpStatusCode.valueOf(201));
+        ResponseEntity<Object> response = new ResponseEntity<>(HttpStatus.CREATED);
         statService.add(HitMapper.dtoToInctance(hitDto));
         return response;
     }
