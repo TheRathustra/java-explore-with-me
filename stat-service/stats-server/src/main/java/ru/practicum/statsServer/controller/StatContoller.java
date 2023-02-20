@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.statsDto.dto.HitDto;
 import ru.practicum.statsServer.model.Hit;
+import ru.practicum.statsServer.model.HitMapper;
 import ru.practicum.statsServer.service.StatService;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class StatContoller {
     @PostMapping(path = "/hit")
     public ResponseEntity<Object> addHit(@RequestBody HitDto hitDto) {
         ResponseEntity<Object> response = new ResponseEntity<>(HttpStatusCode.valueOf(201));
-        statService.add(HitDto.dtoToInctance(hitDto));
+        statService.add(HitMapper.dtoToInctance(hitDto));
         return response;
     }
 
