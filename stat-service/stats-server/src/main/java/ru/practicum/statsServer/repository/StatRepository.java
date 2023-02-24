@@ -14,6 +14,7 @@ public interface StatRepository extends JpaRepository<Hit, Long> {
 
     @Query("SELECT h from Hit h where h.timestamp between :start and :end order by h.id")
     List<Hit> getStatsBetweenDates(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
     @Query("SELECT distinct h from Hit h where h.timestamp between :start and :end order by h.id")
     List<Hit> getStatsBetweenDatesUnique(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
