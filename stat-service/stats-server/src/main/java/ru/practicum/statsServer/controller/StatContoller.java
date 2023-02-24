@@ -29,9 +29,9 @@ public class StatContoller {
 
     @GetMapping(path = "/stats")
     public List<HitDtoAnswer> getStats(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
-                                       @RequestParam(name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
-                                       @RequestParam(name = "uris", required = false) String[] uris,
-                                       @RequestParam(name = "unique", required = false, defaultValue = "false") boolean unique) {
+                                    @RequestParam(name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
+                                    @RequestParam(name = "uris", required = false) String[] uris,
+                                    @RequestParam(name = "unique", required = false, defaultValue = "false") boolean unique) {
         List<String> urisList = uris == null ? Collections.emptyList() : List.of(uris);
         return statService.getStats(start, end, urisList, unique);
     }
