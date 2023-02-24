@@ -2,6 +2,7 @@ package ru.practicum.statsServer.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.statsDto.dto.HitDtoAnswer;
 import ru.practicum.statsServer.model.Hit;
 import ru.practicum.statsServer.repository.StatRepository;
 
@@ -20,8 +21,8 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public List<Hit> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        List<Hit> hits;
+    public List<HitDtoAnswer> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        List<HitDtoAnswer> hits;
         if (unique) {
             if (uris.isEmpty()) {
                 hits = repository.getStatsBetweenDatesUnique(start, end);
