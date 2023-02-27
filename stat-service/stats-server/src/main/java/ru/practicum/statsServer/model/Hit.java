@@ -20,16 +20,19 @@ public class Hit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "app")
+    @Column(name = "app", length = 255, nullable = false)
     private String app;
 
-    @Column(name = "uri")
+    @Column(name = "uri", length = 255, nullable = false)
     private String uri;
 
-    @Column(name = "ip")
+    @Column(name = "ip", length = 15, nullable = false)
     private String ip;
 
     @Column(name = "created")
     private LocalDateTime timestamp;
+
+    @Transient
+    Long hits;
 
 }

@@ -17,11 +17,18 @@ public class HitMapper {
                 .setTimestamp(LocalDateTime.parse(dto.getTimestamp(), formatter));
     }
 
-    public static HitDtoAnswer toHitDtoAnswer(HitAnswer hitAnswer) {
-        return new HitDtoAnswer()
+    public static Hit hitAnswerToInctance(HitAnswer hitAnswer) {
+        return new Hit()
                 .setApp(hitAnswer.getApp())
                 .setUri(hitAnswer.getUri())
                 .setHits(hitAnswer.getHits());
+    }
+
+    public static HitDtoAnswer inctanceToHitDtoAnswer(Hit hit) {
+        return new HitDtoAnswer()
+                .setApp(hit.getApp())
+                .setUri(hit.getUri())
+                .setHits(hit.getHits());
     }
 
 }

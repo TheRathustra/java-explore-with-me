@@ -7,12 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.statsDto.dto.HitDto;
 import ru.practicum.statsDto.dto.HitDtoAnswer;
+import ru.practicum.statsServer.model.Hit;
 import ru.practicum.statsServer.model.HitMapper;
 import ru.practicum.statsServer.service.StatService;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -33,7 +35,8 @@ public class StatContoller {
                                     @RequestParam(name = "uris", required = false) String[] uris,
                                     @RequestParam(name = "unique", required = false, defaultValue = "false") boolean unique) {
         List<String> urisList = uris == null ? Collections.emptyList() : List.of(uris);
-        return statService.getStats(start, end, urisList, unique);
+        List<Hit> hits = statService.getStats(start, end, urisList, unique);
+        return hits.stream().map(HitMapper::inctanceToHitDtoAnswer).collect(Collectors.toList());
     }
 
 }
