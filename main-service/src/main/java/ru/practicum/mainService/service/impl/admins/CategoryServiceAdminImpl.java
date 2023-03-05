@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.mainService.dto.category.CategoryDto;
 import ru.practicum.mainService.dto.category.CategoryMapper;
 import ru.practicum.mainService.dto.category.NewCategoryDto;
+import ru.practicum.mainService.error.exception.CategoryNotFoundException;
 import ru.practicum.mainService.model.Category;
 import ru.practicum.mainService.repository.admins.CategoryRepositoryAdmin;
 import ru.practicum.mainService.service.api.admins.CategoryServiceAdmin;
@@ -25,5 +26,25 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
         category.setName(newCategoryDto.getName());
         Category savedCategory = repository.save(category);
         return CategoryMapper.entityToCategoryDto(savedCategory);
+    }
+
+    @Override
+    public void deleteCategory(Long catId) {
+        if (!repository.existsById(catId)) {
+            throw new CategoryNotFoundException("Category with id=" + catId + "was not found");
+        }
+        repository.deleteById(catId);
+    }
+
+    @Override
+    public CategoryDto updateCategory(Long catId, CategoryDto categoryDto) {
+        if (!repository.existsById(catId)) {
+            throw new CategoryNotFoundException("Category with id=" + catId + "was not found");
+        }
+        Category category = CategoryMapper.categoryDtoToEntity(categoryDto);
+
+        repository.save(category);
+
+        return CategoryMapper.entityToCategoryDto(category);
     }
 }

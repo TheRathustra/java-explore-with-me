@@ -14,13 +14,12 @@ public class CompilationErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ApiError> handleItemRequestNotFoundException(final CompilationNotFountException e) {
+    public ResponseEntity<ApiError> handleCompilationNotFountException(final CompilationNotFountException e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("The required object was not found.");
         error.setStatus(HttpStatus.NOT_FOUND);
 
-        ResponseEntity<ApiError> response = new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        return response;
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
 }

@@ -9,4 +9,7 @@ public class CategoryMapper {
                                 entity.getName());
     }
 
+    public static Category categoryDtoToEntity(CategoryDto categoryDto) {
+        return new Category(categoryDto.getId(), categoryDto.getName());
+    }
 }
