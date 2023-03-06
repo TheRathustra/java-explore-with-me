@@ -30,6 +30,11 @@ public class UserControllerAdmin {
     public List<UserDto> getUsers(@RequestParam(name = "ids") List<Long> ids,
                                   @RequestParam(name = "from", defaultValue = "0") Integer from,
                                   @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        /*
+        Возвращает информацию обо всех пользователях (учитываются параметры ограничения выборки),
+        либо о конкретных (учитываются указанные идентификаторы)
+        В случае, если по заданным фильтрам не найдено ни одного пользователя, возвращает пустой список
+         */
         return userService.getUsers(ids, from, size)
                 .stream().map(UserMapper::entityToUserDto)
                 .collect(Collectors.toList());

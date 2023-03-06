@@ -31,7 +31,13 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
     public List<User> getUsers(List<Long> ids, Integer from, Integer size) {
         int page = from / size;
         Pageable pageRequest = PageRequest.of(page, size);
-        return repository.findAllByIdIn(ids, pageRequest);
+        List<User> users;
+        if (ids != null) {
+            users = repository.findAllByIdIn(ids, pageRequest);
+        } else {
+            users = repository.findAll(pageRequest).toList();
+        }
+        return users;
     }
 
     @Override

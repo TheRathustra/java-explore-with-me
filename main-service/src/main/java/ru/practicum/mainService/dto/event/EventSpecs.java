@@ -35,4 +35,29 @@ public class EventSpecs {
                 LocalDateTime.parse(rangeEnd, formatter));
     }
 
+    public static Specification<Event> byText(String text) {
+        return byAnnotation(text).or(byDscription(text)).or(byTitle(text));
+    }
+
+    public static Specification<Event> byAnnotation(String text) {
+        return (root, query, cb) -> text == null ? null : cb.like(root.get("annotation"), text);
+    }
+
+    public static Specification<Event> byDscription(String text) {
+        return (root, query, cb) -> text == null ? null : cb.like(root.get("description"), text);
+    }
+
+    public static Specification<Event> byTitle(String text) {
+        return (root, query, cb) -> text == null ? null : cb.like(root.get("title"), text);
+    }
+
+    public static Specification<Event> byPaid(Boolean paid) {
+        return (root, query, cb) -> paid == null ? null : cb.equal(root.get("paid"), paid);
+    }
+
+    public static Specification<Event> byOnlyAvailable(Boolean onlyAvailable) {
+        return (root, query, cb) -> onlyAvailable == null || !onlyAvailable ? null :
+                cb.lessThanOrEqualTo(root.get("participantLimit"), root.get("confirmedRequests"));
+    }
+
 }
