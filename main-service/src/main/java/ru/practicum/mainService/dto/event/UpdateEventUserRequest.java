@@ -1,11 +1,19 @@
 package ru.practicum.mainService.dto.event;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.practicum.mainService.model.Location;
 import ru.practicum.mainService.model.State;
 
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdateEventUserRequest {
 
     private Long id;

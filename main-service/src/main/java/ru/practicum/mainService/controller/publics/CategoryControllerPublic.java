@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainService.dto.category.CategoryDto;
 import ru.practicum.mainService.service.api.publics.CategoryServicePublic;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/categories")
 public class CategoryControllerPublic {
@@ -17,8 +19,8 @@ public class CategoryControllerPublic {
     }
 
     @GetMapping()
-    public CategoryDto getCategories(@RequestParam(name = "from", defaultValue = "0") Integer from,
-                                     @RequestParam(name = "size", defaultValue = "10") Integer size) {
+    public List<CategoryDto> getCategories(@RequestParam(name = "from", defaultValue = "0") Integer from,
+                                           @RequestParam(name = "size", defaultValue = "10") Integer size) {
         return categoryService.getCategories(from, size);
     }
 

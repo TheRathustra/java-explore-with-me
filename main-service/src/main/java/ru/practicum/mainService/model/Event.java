@@ -63,7 +63,7 @@ public class Event {
 
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
-    private Status state;
+    private State state;
 
     @Column(name = "title")
     private String title;

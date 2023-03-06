@@ -25,6 +25,7 @@ public class CategoryControllerAdmin {
 
     @PostMapping
     public ResponseEntity<CategoryDto> addCategory(@RequestBody NewCategoryDto newCategoryDto) {
+        //имя категории должно быть уникальным
         validator.validateCategory(newCategoryDto);
         CategoryDto categoryDto = categoryService.addCategory(newCategoryDto);
         return new ResponseEntity<>(categoryDto, HttpStatus.OK);
@@ -32,6 +33,7 @@ public class CategoryControllerAdmin {
 
     @DeleteMapping(path = "/{catId}")
     public ResponseEntity deleteCategory(@PathVariable(name = "catId") Long catId) {
+        //с категорией не должно быть связано ни одного события.
         categoryService.deleteCategory(catId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -39,6 +41,7 @@ public class CategoryControllerAdmin {
     @PatchMapping(path = "/{catId}")
     public ResponseEntity<CategoryDto> updateCategory(@PathVariable(name = "catId") Long catId,
                                                       @RequestBody CategoryDto categoryDto) {
+        //имя категории должно быть уникальным
         validator.validateCategory(categoryDto);
         CategoryDto updatedCategory = categoryService.updateCategory(catId, categoryDto);
         return new ResponseEntity<>(updatedCategory, HttpStatus.OK);

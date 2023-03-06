@@ -1,4 +1,4 @@
-package ru.practicum.mainService.dto.event;
+package ru.practicum.mainService.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

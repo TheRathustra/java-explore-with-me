@@ -7,9 +7,10 @@ import ru.practicum.mainService.dto.user.UserDto;
 import ru.practicum.mainService.dto.user.UserMapper;
 import ru.practicum.mainService.model.User;
 import ru.practicum.mainService.service.api.admins.UserServiceAdmin;
+import ru.practicum.mainService.validator.UserValidator;
 
-import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/users")
@@ -17,23 +18,30 @@ public class UserControllerAdmin {
 
     private final UserServiceAdmin userService;
 
+    private final UserValidator validator;
+
     @Autowired
-    public UserControllerAdmin(UserServiceAdmin userService) {
+    public UserControllerAdmin(UserServiceAdmin userService, UserValidator validator) {
         this.userService = userService;
+        this.validator = validator;
     }
 
     @GetMapping
     public List<UserDto> getUsers(@RequestParam(name = "ids") List<Long> ids,
                                   @RequestParam(name = "from", defaultValue = "0") Integer from,
                                   @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        return null;
+        return userService.getUsers(ids, from, size)
+                .stream().map(UserMapper::entityToUserDto)
+                .collect(Collectors.toList());
     }
 
     @PostMapping
     @Transactional
-    public User registerUser(@Valid @RequestBody UserDto userDto) {
+    public UserDto registerUser(@RequestBody UserDto userDto) {
+        validator.validateUser(userDto);
         User user = UserMapper.userDtoToEntity(userDto);
-        return userService.create(user);
+        User newUser = userService.create(user);
+        return UserMapper.entityToUserDto(newUser);
     }
 
     @DeleteMapping(path = "/{userId}")

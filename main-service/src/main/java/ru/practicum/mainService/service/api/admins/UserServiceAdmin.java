@@ -8,7 +8,7 @@ public interface UserServiceAdmin {
 
     User create(User user);
 
-    List<User> get(Integer from, Integer size);
+    List<User> getUsers(List<Long> ids, Integer from, Integer size);
 
     void delete(Long id);
 

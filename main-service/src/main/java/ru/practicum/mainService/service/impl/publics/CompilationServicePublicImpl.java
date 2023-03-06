@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.mainService.dto.compilation.CompilationDto;
 import ru.practicum.mainService.dto.compilation.CompilationMapper;
-import ru.practicum.mainService.error.exception.CompilationNotFountException;
+import ru.practicum.mainService.error.exception.compilation.CompilationNotFountException;
 import ru.practicum.mainService.model.Compilation;
 import ru.practicum.mainService.repository.publics.CompilationRepositoryPublic;
 import ru.practicum.mainService.service.api.publics.CompilationServicePublic;
@@ -36,10 +36,8 @@ public class CompilationServicePublicImpl implements CompilationServicePublic {
             compilations = repository.findAll(pageRequest).toList();
         }
 
-        List<CompilationDto> compilationDtos = compilations.stream()
+        return compilations.stream()
                 .map(CompilationMapper::entityToCompilationDto).collect(Collectors.toList());
-
-        return compilationDtos;
     }
 
     @Override

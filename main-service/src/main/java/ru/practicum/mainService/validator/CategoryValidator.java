@@ -3,7 +3,7 @@ package ru.practicum.mainService.validator;
 import org.springframework.stereotype.Component;
 import ru.practicum.mainService.dto.category.CategoryDto;
 import ru.practicum.mainService.dto.category.NewCategoryDto;
-import ru.practicum.mainService.error.exception.CategoryValidationException;
+import ru.practicum.mainService.error.exception.category.CategoryValidationException;
 
 @Component
 public class CategoryValidator {

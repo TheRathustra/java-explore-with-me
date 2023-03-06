@@ -1,14 +1,16 @@
 package ru.practicum.mainService.service.impl.admins;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.practicum.mainService.error.exception.user.UserNotFoundException;
 import ru.practicum.mainService.model.User;
 import ru.practicum.mainService.repository.admins.UserRepositoryAdmin;
 import ru.practicum.mainService.service.api.admins.UserServiceAdmin;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceAdminImpl implements UserServiceAdmin {
@@ -26,14 +28,19 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
     }
 
     @Override
-    public List<User> get(Integer from, Integer size) {
-        PageRequest pageRequest = PageRequest.of(from, size);
-        Page<User> users = repository.findAll(pageRequest);
-        return users.toList();
+    public List<User> getUsers(List<Long> ids, Integer from, Integer size) {
+        int page = from / size;
+        Pageable pageRequest = PageRequest.of(page, size);
+        return repository.findAllByIdIn(ids, pageRequest);
     }
 
     @Override
     public void delete(Long id) {
+        Optional<User> user = repository.findById(id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User with id=" + id + " was not found");
+        }
+
         repository.deleteById(id);
     }
 }

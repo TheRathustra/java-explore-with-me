@@ -24,14 +24,15 @@ public class CompilationControllerPublic {
     public List<CompilationDto> getCompilations(@RequestParam(name = "pinned", required = false) Boolean pinned,
                                                 @RequestParam(name = "from", defaultValue = "0") Integer from,
                                                 @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        //В случае, если по заданным фильтрам не найдено ни одной подборки, возвращает пустой список
         return compilationService.getCompilations(pinned, from, size);
     }
 
     @GetMapping(path = "/{compId}")
     public ResponseEntity<CompilationDto> getCompilationsById(@PathVariable(name = "compId") Long compId) {
+        //В случае, если подборки с заданным id не найдено, возвращает статус код 404, иначе 200
         CompilationDto compilationDto = compilationService.getCompilationsById(compId);
-        ResponseEntity<CompilationDto> response = new ResponseEntity<>(compilationDto, HttpStatus.OK);
-        return response;
+        return new ResponseEntity<>(compilationDto, HttpStatus.OK);
     }
 
 }
