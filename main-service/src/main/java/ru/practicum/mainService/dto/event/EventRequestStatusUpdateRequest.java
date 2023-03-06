@@ -3,6 +3,7 @@ package ru.practicum.mainService.dto.event;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.practicum.mainService.model.Status;
 
 import java.util.Set;
 
@@ -13,6 +14,6 @@ public class EventRequestStatusUpdateRequest {
 
     Set<Long> requestIds;
 
-    private String status;
+    private Status status;
 
 }

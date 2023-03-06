@@ -10,6 +10,8 @@ import ru.practicum.mainService.dto.request.RequestMapper;
 import ru.practicum.mainService.error.exception.category.CategoryNotFoundException;
 import ru.practicum.mainService.error.exception.event.EventIncorrectState;
 import ru.practicum.mainService.error.exception.event.EventNotFoundException;
+import ru.practicum.mainService.error.exception.request.IncorrectRequestStatusException;
+import ru.practicum.mainService.error.exception.request.RequestParticipantLimitException;
 import ru.practicum.mainService.model.*;
 import ru.practicum.mainService.repository.privates.EventRepositoryPrivate;
 import ru.practicum.mainService.repository.publics.CategoryRepositoryPublic;
@@ -19,6 +21,7 @@ import ru.practicum.mainService.service.api.publics.UserServicePublic;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,17 +100,27 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             throw new CategoryNotFoundException("Category with id=" + eventDto.getCategory() + "was not found");
         }
 
-        event.setAnnotation(eventDto.getAnnotation());
-        event.setDescription(eventDto.getDescription());
         event.setCategory(category.get());
-        event.setEventDate(LocalDateTime.parse(eventDto.getEventDate(), formatter));
-        event.setLat(eventDto.getLocation().getLat());
-        event.setLon(eventDto.getLocation().getLon());
-        event.setPaid(eventDto.getPaid());
-        event.setParticipantLimit(eventDto.getParticipantLimit());
-        event.setRequestModeration(eventDto.getRequestModeration());
-        event.setState(eventDto.getStateAction());
-        event.setTitle(eventDto.getTitle());
+        if (eventDto.getAnnotation() != null)
+            event.setAnnotation(eventDto.getAnnotation());
+        if (eventDto.getDescription() != null)
+            event.setDescription(eventDto.getDescription());
+        if (eventDto.getEventDate() != null)
+            event.setEventDate(LocalDateTime.parse(eventDto.getEventDate(), formatter));
+        if (eventDto.getLocation() != null) {
+            event.setLat(eventDto.getLocation().getLat());
+            event.setLon(eventDto.getLocation().getLon());
+        }
+        if (eventDto.getPaid() != null)
+            event.setPaid(eventDto.getPaid());
+        if (eventDto.getParticipantLimit() != null)
+            event.setParticipantLimit(eventDto.getParticipantLimit());
+        if (eventDto.getRequestModeration() != null)
+            event.setRequestModeration(eventDto.getRequestModeration());
+        if (eventDto.getStateAction() != null)
+            event.setState(eventDto.getStateAction());
+        if (eventDto.getTitle() != null)
+            event.setTitle(eventDto.getTitle());
 
         Event updatedEvent = repository.save(event);
 
@@ -121,9 +134,59 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     }
 
     @Override
-    public EventRequestStatusUpdateResult changeRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
+    public EventRequestStatusUpdateResult changeRequestStatus(Long userId,
+                                                              Long eventId,
+                                                              EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
 
-        return null;
+        EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult();
+        List<ParticipationRequestDto> confirmedRequests = new ArrayList<>();
+        List<ParticipationRequestDto> rejectedRequests = new ArrayList<>();
+
+        Status newStatus = eventRequestStatusUpdateRequest.getStatus();
+
+        userService.getUserById(userId);
+        Event event = repository.findByIdAndInitiatorId(eventId, userId);
+        if (event == null) {
+            throw new EventNotFoundException("Event with id=" + eventId + " was not found");
+        }
+
+        Integer limit = event.getParticipantLimit();
+
+        if ((event.getParticipantLimit() > 0 && event.getRequestModeration())
+                && limit <= event.getConfirmedRequests()) {
+            throw new RequestParticipantLimitException("The participant limit has been reached");
+        }
+
+        List<Long> requestIds = eventRequestStatusUpdateRequest
+                .getRequestIds().stream()
+                .collect(Collectors.toList());
+
+        List<Request> requests = requestRepository.findAllByIdInAndRequesterIdAndEventId(requestIds, userId, eventId);
+        for (Request request : requests) {
+            if (request.getStatus() != Status.PENDING) {
+                throw new IncorrectRequestStatusException("Request must have status PENDING");
+            }
+            if (newStatus == Status.CONFIRMED) {
+                confirmedRequests.add(RequestMapper.requestToParticipationRequestDto(request));
+                limit++;
+            }
+            if (newStatus == Status.REJECTED)
+                rejectedRequests.add(RequestMapper.requestToParticipationRequestDto(request));
+            request.setStatus(newStatus);
+
+            if ((event.getParticipantLimit() > 0 && event.getRequestModeration())
+                    && limit <= event.getConfirmedRequests()) {
+                newStatus = Status.REJECTED;
+            }
+        }
+
+        requestRepository.saveAll(requests);
+
+        result.setConfirmedRequests(confirmedRequests);
+        result.setRejectedRequests(rejectedRequests);
+
+        return result;
+
     }
 
 }

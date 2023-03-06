@@ -5,14 +5,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.mainService.controller.admins.EventControllerAdmin;
 import ru.practicum.mainService.controller.privates.EventControllerPrivate;
 import ru.practicum.mainService.error.ApiError;
 import ru.practicum.mainService.error.exception.category.CategoryNotFoundException;
 import ru.practicum.mainService.error.exception.event.EventIncorrectState;
+import ru.practicum.mainService.error.exception.event.EventIncorrectStateForAdmin;
 import ru.practicum.mainService.error.exception.event.EventNotFoundException;
 import ru.practicum.mainService.error.exception.event.EventValidationException;
+import ru.practicum.mainService.error.exception.request.IncorrectRequestStatusException;
+import ru.practicum.mainService.error.exception.request.RequestParticipantLimitException;
 
-@RestControllerAdvice(assignableTypes = {EventControllerPrivate.class})
+@RestControllerAdvice(assignableTypes = {EventControllerPrivate.class, EventControllerAdmin.class})
 public class EventErrorHandler {
 
     @ExceptionHandler
@@ -49,6 +53,33 @@ public class EventErrorHandler {
         error.setReason("Incorrectly made request.");
         error.setStatus(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ApiError> handleRequestParticipantLimitException(final RequestParticipantLimitException e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("For the requested operation the conditions are not met.");
+        error.setStatus(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiError> handleIncorrectRequestStatusException(final IncorrectRequestStatusException e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("Incorrectly made request.");
+        error.setStatus(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<ApiError> handleEventIncorrectStateForAdmin(final EventIncorrectStateForAdmin e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("For the requested operation the conditions are not met.");
+        error.setStatus(HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
 }
