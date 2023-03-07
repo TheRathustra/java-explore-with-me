@@ -5,11 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.mainService.controller.admins.CompilationControllerAdmin;
 import ru.practicum.mainService.controller.publics.CompilationControllerPublic;
 import ru.practicum.mainService.error.ApiError;
 import ru.practicum.mainService.error.exception.compilation.CompilationNotFountException;
 
-@RestControllerAdvice(assignableTypes = {CompilationControllerPublic.class})
+@RestControllerAdvice(assignableTypes = {CompilationControllerPublic.class, CompilationControllerAdmin.class})
 public class CompilationErrorHandler {
 
     @ExceptionHandler

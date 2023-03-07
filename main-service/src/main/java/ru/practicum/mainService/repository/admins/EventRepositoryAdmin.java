@@ -12,4 +12,6 @@ public interface EventRepositoryAdmin extends JpaRepository<Event, Long>, JpaSpe
 
     List<Event> findAllByCategoryId(Long categoryId);
 
+    List<Event> findAllByIdIn(List<Long> ids);
+
 }

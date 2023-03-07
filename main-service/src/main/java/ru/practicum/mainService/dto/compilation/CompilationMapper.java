@@ -18,4 +18,13 @@ public class CompilationMapper {
         return dto;
     }
 
+    public static Compilation newCompilationDtoToEntity(NewCompilationDto dto) {
+        Compilation compilation = new Compilation();
+        compilation.setPinned(dto.getPinned());
+        compilation.setTitle(dto.getTitle());
+
+        return compilation;
+    }
+
+
 }
