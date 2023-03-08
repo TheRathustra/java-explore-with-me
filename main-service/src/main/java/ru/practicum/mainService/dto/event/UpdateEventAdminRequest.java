@@ -1,15 +1,17 @@
 package ru.practicum.mainService.dto.event;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.mainService.model.Location;
-import ru.practicum.mainService.model.State;
+import ru.practicum.mainService.model.StateAction;
 
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 public class UpdateEventAdminRequest {
@@ -17,13 +19,13 @@ public class UpdateEventAdminRequest {
     private Long id;
 
     @Size(min = 20, max = 2000, message
-            = "Annotation Me must be between 20 and 2000 characters")
+            = "Annotation must be between 20 and 2000 characters")
     private String annotation;
 
     private Long category;
 
     @Size(min = 20, max = 7000, message
-            = "Description Me must be between 20 and 7000 characters")
+            = "Description must be between 20 and 7000 characters")
     private String description;
 
     private String eventDate;
@@ -33,14 +35,14 @@ public class UpdateEventAdminRequest {
     private Boolean paid;
 
     @PositiveOrZero
-    private Integer participantLimit;
+    private Integer participantLimit = 0;
 
     private Boolean requestModeration;
 
-    private State stateAction;
+    private StateAction stateAction;
 
     @Size(min = 3, max = 120, message
-            = "Title Me must be between 3 and 120 characters")
+            = "Title must be between 3 and 120 characters")
     private String title;
 
 }

@@ -30,7 +30,6 @@ public class EventControllerAdmin {
         //Эндпоинт возвращает полную информацию обо всех событиях подходящих под переданные условия
         //В случае, если по заданным фильтрам не найдено ни одного события, возвращает пустой список
         return eventService.getEvents(users, states, categories, rangeStart, rangeEnd, from, size);
-
     }
 
     @PatchMapping(path = "/{eventId}")

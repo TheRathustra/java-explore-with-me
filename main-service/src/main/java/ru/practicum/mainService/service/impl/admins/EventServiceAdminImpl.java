@@ -15,6 +15,7 @@ import ru.practicum.mainService.error.exception.event.EventNotFoundException;
 import ru.practicum.mainService.model.Category;
 import ru.practicum.mainService.model.Event;
 import ru.practicum.mainService.model.State;
+import ru.practicum.mainService.model.StateAction;
 import ru.practicum.mainService.repository.admins.CategoryRepositoryAdmin;
 import ru.practicum.mainService.repository.admins.EventRepositoryAdmin;
 import ru.practicum.mainService.service.api.admins.EventServiceAdmin;
@@ -64,17 +65,17 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         }
 
         Event event = eventOptional.get();
-        if ((updateEventAdminRequest.getStateAction() == State.PUBLISHED) && event.getState() != State.PENDING) {
+        if ((updateEventAdminRequest.getStateAction() == StateAction.PUBLISH_EVENT) && event.getState() != State.PENDING) {
             throw new EventIncorrectStateForAdmin("Cannot publish the event because it's not in the right state: "
                                                 + event.getState());
         }
 
-        if (updateEventAdminRequest.getStateAction() == State.CANCELED && event.getState() == State.PUBLISHED) {
+        if (updateEventAdminRequest.getStateAction() == StateAction.REJECT_EVENT && event.getState() == State.PUBLISHED) {
             throw new EventIncorrectStateForAdmin("Cannot publish the event because it's not in the right state: "
                     + event.getState());
         }
 
-        if (updateEventAdminRequest.getStateAction() == State.PUBLISHED
+        if (updateEventAdminRequest.getStateAction() == StateAction.PUBLISH_EVENT
                 && event.getEventDate().isBefore(LocalDateTime.now().minus(1, ChronoUnit.HOURS))) {
             throw new EventIncorrectStateForAdmin("Cannot publish the event because incorrect event date");
         }
@@ -105,8 +106,13 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             event.setParticipantLimit(updateEventAdminRequest.getParticipantLimit());
         if (updateEventAdminRequest.getRequestModeration() != null)
             event.setRequestModeration(updateEventAdminRequest.getRequestModeration());
-        if (updateEventAdminRequest.getStateAction() != null)
-            event.setState(updateEventAdminRequest.getStateAction());
+        if (updateEventAdminRequest.getStateAction() != null) {
+            if (updateEventAdminRequest.getStateAction() == StateAction.PUBLISH_EVENT) {
+                event.setState(State.PUBLISHED);
+            } else {
+                event.setState(State.CANCELED);
+            }
+        }
         if (updateEventAdminRequest.getTitle() != null)
             event.setTitle(updateEventAdminRequest.getTitle());
 

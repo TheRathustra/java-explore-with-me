@@ -24,7 +24,7 @@ public class NewEventDto {
     private Long category;
 
     @Size(min = 20, max = 7000, message
-            = "Description Me must be between 20 and 7000 characters")
+            = "Description must be between 20 and 7000 characters")
     private String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -40,7 +40,7 @@ public class NewEventDto {
     private Boolean requestModeration;
 
     @Size(min = 3, max = 120, message
-            = "Title Me must be between 3 and 120 characters")
+            = "Title must be between 3 and 120 characters")
     private String title;
 
 }

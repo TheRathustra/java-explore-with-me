@@ -57,7 +57,6 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto addEvent(Long userId, NewEventDto eventDto) {
-
         Optional<Category> category = categoryRepository.findById(eventDto.getCategory());
         if (category.isEmpty()) {
             throw new CategoryNotFoundException("Category with id=" + eventDto.getCategory() + "was not found");
@@ -66,6 +65,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         User user = userService.getUserById(userId);
 
         Event event = EventMapper.newEventDtoToEntity(eventDto);
+        event.setState(State.PENDING);
         event.setCategory(category.get());
         event.setInitiator(user);
         event.setCreatedOn(LocalDateTime.now());
