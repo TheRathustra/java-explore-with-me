@@ -11,16 +11,16 @@ import java.util.List;
 public class EventSpecs {
 
     public static Specification<Event> byUsers(List<Long> users) {
-        return (root, query, cb) -> users == null ? null : cb.equal(root.get("initiator").get("id"), users);
+        return (root, query, cb) -> users == null ? null : cb.in(root.get("initiator").get("id")).value(users);
     }
 
     public static Specification<Event> byStates(List<String> states) {
-        return (root, query, cb) -> states == null ? null : cb.equal(root.get("state"), states.stream().map(
+        return (root, query, cb) -> states == null ? null : cb.in(root.get("state")).value(states.stream().map(
                 State::valueOf));
     }
 
     public static Specification<Event> byCategories(List<Long> categories) {
-        return (root, query, cb) -> categories == null ? null : cb.equal(root.get("category").get("id"), categories);
+        return (root, query, cb) -> categories == null ? null : cb.in(root.get("category").get("id")).value(categories);
     }
 
     public static Specification<Event> byRangeStart(String rangeStart) {
@@ -40,15 +40,15 @@ public class EventSpecs {
     }
 
     public static Specification<Event> byAnnotation(String text) {
-        return (root, query, cb) -> text == null ? null : cb.like(root.get("annotation"), text);
+        return (root, query, cb) -> text == null ? null : cb.like(root.get("annotation"), "%" + text + "%");
     }
 
     public static Specification<Event> byDscription(String text) {
-        return (root, query, cb) -> text == null ? null : cb.like(root.get("description"), text);
+        return (root, query, cb) -> text == null ? null : cb.like(root.get("description"), "%" + text + "%");
     }
 
     public static Specification<Event> byTitle(String text) {
-        return (root, query, cb) -> text == null ? null : cb.like(root.get("title"), text);
+        return (root, query, cb) -> text == null ? null : cb.like(root.get("title"), "%" + text + "%");
     }
 
     public static Specification<Event> byPaid(Boolean paid) {
