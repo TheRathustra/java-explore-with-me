@@ -8,6 +8,7 @@ import ru.practicum.mainService.dto.compilation.CompilationDto;
 import ru.practicum.mainService.dto.compilation.NewCompilationDto;
 import ru.practicum.mainService.dto.compilation.UpdateCompilationRequest;
 import ru.practicum.mainService.service.api.admins.CompilationServiceAdmin;
+import ru.practicum.mainService.validator.CompilationValidator;
 
 @RestController
 @RequestMapping(path = "/admin/compilations")
@@ -15,13 +16,17 @@ public class CompilationControllerAdmin {
 
     private final CompilationServiceAdmin compilationService;
 
+    private final CompilationValidator validator;
+
     @Autowired
-    public CompilationControllerAdmin(CompilationServiceAdmin compilationService) {
+    public CompilationControllerAdmin(CompilationServiceAdmin compilationService, CompilationValidator validator) {
         this.compilationService = compilationService;
+        this.validator = validator;
     }
 
     @PostMapping
     public CompilationDto saveCompilation(@RequestBody NewCompilationDto newCompilationDto) {
+        validator.validateCompilation(newCompilationDto);
         return compilationService.saveCompilation(newCompilationDto);
     }
 

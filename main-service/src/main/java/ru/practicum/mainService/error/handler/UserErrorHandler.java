@@ -5,12 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.mainService.controller.admins.UserControllerAdmin;
 import ru.practicum.mainService.error.ApiError;
 import ru.practicum.mainService.error.exception.user.UserNotFoundException;
 import ru.practicum.mainService.error.exception.user.UserValidationException;
 import ru.practicum.mainService.service.impl.publics.UserServicePublicImpl;
 
-@RestControllerAdvice(assignableTypes = {UserServicePublicImpl.class})
+@RestControllerAdvice(assignableTypes = {UserServicePublicImpl.class, UserControllerAdmin.class})
 public class UserErrorHandler {
 
     @ExceptionHandler

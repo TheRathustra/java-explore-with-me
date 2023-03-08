@@ -12,7 +12,6 @@ import ru.practicum.mainService.model.Event;
 import ru.practicum.mainService.repository.admins.CompilationRepositoryAdmin;
 import ru.practicum.mainService.repository.admins.EventRepositoryAdmin;
 import ru.practicum.mainService.service.api.admins.CompilationServiceAdmin;
-import ru.practicum.mainService.validator.CompilationValidator;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,18 +23,14 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
 
     private final EventRepositoryAdmin eventRepository;
 
-    private final CompilationValidator validator;
-
     @Autowired
-    public CompilationServiceAdminImpl(CompilationRepositoryAdmin repository, EventRepositoryAdmin eventRepository, CompilationValidator validator) {
+    public CompilationServiceAdminImpl(CompilationRepositoryAdmin repository, EventRepositoryAdmin eventRepository) {
         this.repository = repository;
         this.eventRepository = eventRepository;
-        this.validator = validator;
     }
 
     @Override
     public CompilationDto saveCompilation(NewCompilationDto newCompilationDto) {
-        validator.validateCompilation(newCompilationDto);
         Compilation compilation = CompilationMapper.newCompilationDtoToEntity(newCompilationDto);
         List<Event> events = eventRepository.findAllByIdIn(newCompilationDto.getEvents());
         compilation.setEvents(events);

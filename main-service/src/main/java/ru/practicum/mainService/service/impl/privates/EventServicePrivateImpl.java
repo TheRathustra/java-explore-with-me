@@ -120,7 +120,11 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (eventDto.getRequestModeration() != null)
             event.setRequestModeration(eventDto.getRequestModeration());
         if (eventDto.getStateAction() != null)
-            event.setState(eventDto.getStateAction());
+            if (eventDto.getStateAction() == StateAction.SEND_TO_REVIEW) {
+                event.setState(State.PUBLISHED);
+            } else {
+                event.setState(State.CANCELED);
+            }
         if (eventDto.getTitle() != null)
             event.setTitle(eventDto.getTitle());
 

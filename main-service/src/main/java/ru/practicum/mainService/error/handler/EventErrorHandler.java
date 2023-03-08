@@ -20,12 +20,12 @@ import ru.practicum.mainService.error.exception.request.RequestParticipantLimitE
 public class EventErrorHandler {
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ApiError> handleEventValidationException(final EventValidationException e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("For the requested operation the conditions are not met.");
-        error.setStatus(HttpStatus.FORBIDDEN);
-        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+        error.setStatus(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler

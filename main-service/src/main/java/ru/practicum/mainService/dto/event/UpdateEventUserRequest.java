@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.mainService.model.Location;
-import ru.practicum.mainService.model.State;
+import ru.practicum.mainService.model.StateAction;
 
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
@@ -39,7 +39,7 @@ public class UpdateEventUserRequest {
 
     private Boolean requestModeration;
 
-    private State stateAction;
+    private StateAction stateAction;
 
     @Size(min = 3, max = 120, message
             = "Title must be between 3 and 120 characters")
