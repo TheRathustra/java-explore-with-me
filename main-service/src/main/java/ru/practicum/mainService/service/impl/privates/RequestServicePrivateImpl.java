@@ -92,7 +92,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
         userService.getUserById(userId);
 
         Optional<Request> requestOptional = repository.findById(requestId);
-        if (requestOptional.isEmpty()){
+        if (requestOptional.isEmpty()) {
             throw new RequestNotFoundException("Request with id=" + requestId + " was not found");
         }
 

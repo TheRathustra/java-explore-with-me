@@ -1,4 +1,4 @@
-
+/*
 DELETE FROM users;
 ALTER TABLE users ALTER COLUMN id RESTART WITH 1;
 
@@ -52,3 +52,4 @@ INSERT INTO requests (requester_id, event_id, created, status) VALUES (2, 2, '20
 
 INSERT INTO events_compilations (event_id, compilation_id) VALUES (1, 1);
 INSERT INTO events_compilations (event_id, compilation_id) VALUES (2, 2);
+ */
