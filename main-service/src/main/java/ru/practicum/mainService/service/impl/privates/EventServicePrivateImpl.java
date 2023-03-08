@@ -163,11 +163,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             throw new RequestParticipantLimitException("The participant limit has been reached");
         }
 
-        List<Long> requestIds = eventRequestStatusUpdateRequest
-                .getRequestIds().stream()
-                .collect(Collectors.toList());
-
-        List<Request> requests = requestRepository.findAllByIdInAndRequesterIdAndEventId(requestIds, userId, eventId);
+        List<Request> requests = requestRepository
+                .findAllByIdInAndRequesterIdAndEventId(eventRequestStatusUpdateRequest.getRequestIds(), userId, eventId);
         for (Request request : requests) {
             if (request.getStatus() != Status.PENDING) {
                 throw new IncorrectRequestStatusException("Request must have status PENDING");
@@ -178,6 +175,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             }
             if (newStatus == Status.REJECTED)
                 rejectedRequests.add(RequestMapper.requestToParticipationRequestDto(request));
+
             request.setStatus(newStatus);
 
             if ((event.getParticipantLimit() > 0 && event.getRequestModeration())

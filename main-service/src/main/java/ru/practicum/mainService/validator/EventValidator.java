@@ -33,18 +33,15 @@ public class EventValidator {
         if (eventDto.getEventDate() == null || eventDto.getEventDate().isBefore(LocalDateTime.now().plus(2, ChronoUnit.HOURS))) {
             throw new EventValidationException("Field: eventDate. Error: должно содержать дату, которая еще не наступила. Value: " + eventDto.getEventDate());
         }
+
     }
 
     public void validateEvent(UpdateEventUserRequest eventDto) {
 
-        if (eventDto.getEventDate() == null) {
-            throw new EventValidationException("Field: eventDate. Error: должно содержать дату, которая еще не наступила. Value: " + eventDto.getEventDate());
-        }
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
         LocalDateTime eventDate = LocalDateTime.parse(eventDto.getEventDate(), formatter);
-        if (eventDate.isBefore(LocalDateTime.now().plus(2, ChronoUnit.HOURS))) {
+        if (eventDto.getEventDate() != null && eventDate.isBefore(LocalDateTime.now().plus(2, ChronoUnit.HOURS))) {
             throw new EventValidationException("Field: eventDate. Error: должно содержать дату, которая еще не наступила. Value: " + eventDto.getEventDate());
         }
     }

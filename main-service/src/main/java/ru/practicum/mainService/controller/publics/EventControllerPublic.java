@@ -45,8 +45,8 @@ public class EventControllerPublic {
         информацию о том, что по этому эндпоинту был осуществлен и обработан запрос, нужно сохранить в сервисе статистики
          */
 
-        HitDto hitDto = makeHitDto(request);
-        client.sendHit(hitDto);
+        //HitDto hitDto = makeHitDto(request);
+        //client.sendHit(hitDto);
         return eventService.getEvents(text, categories, paid,rangeStart, rangeEnd, onlyAvailable, sort, from, size);
     }
 
@@ -58,8 +58,8 @@ public class EventControllerPublic {
         информацию о том, что по этому эндпоинту был осуществлен и обработан запрос, нужно сохранить в сервисе
         статистики
          */
-        HitDto hitDto = makeHitDto(request);
-        client.sendHit(hitDto);
+        //HitDto hitDto = makeHitDto(request);
+        //client.sendHit(hitDto);
         return eventService.getEventById(id);
     }
 

@@ -5,14 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.mainService.model.Status;
 
-import java.util.Set;
+import java.util.List;
 
 @NoArgsConstructor
 @Setter
 @Getter
 public class EventRequestStatusUpdateRequest {
 
-    Set<Long> requestIds;
+    List<Long> requestIds;
 
     private Status status;
 
