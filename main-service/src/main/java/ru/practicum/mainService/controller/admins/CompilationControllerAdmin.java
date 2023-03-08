@@ -38,7 +38,7 @@ public class CompilationControllerAdmin {
     @Transactional
     public ResponseEntity<Object> deleteCompilation(@PathVariable(name = "compId") Long compId) {
         compilationService.deleteCompilation(compId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping(path = "/{compId}")

@@ -54,8 +54,9 @@ public class UserControllerAdmin {
 
     @DeleteMapping(path = "/{userId}")
     @Transactional
-    public void delete(@PathVariable(name = "userId") Long id) {
+    public ResponseEntity delete(@PathVariable(name = "userId") Long id) {
         userService.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }
