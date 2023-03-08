@@ -9,6 +9,8 @@ import ru.practicum.mainService.dto.category.NewCategoryDto;
 import ru.practicum.mainService.service.api.admins.CategoryServiceAdmin;
 import ru.practicum.mainService.validator.CategoryValidator;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping(path = "/admin/categories")
 public class CategoryControllerAdmin {
@@ -24,6 +26,7 @@ public class CategoryControllerAdmin {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<CategoryDto> addCategory(@RequestBody NewCategoryDto newCategoryDto) {
         //имя категории должно быть уникальным
         validator.validateCategory(newCategoryDto);
@@ -32,6 +35,7 @@ public class CategoryControllerAdmin {
     }
 
     @DeleteMapping(path = "/{catId}")
+    @Transactional
     public ResponseEntity deleteCategory(@PathVariable(name = "catId") Long catId) {
         //с категорией не должно быть связано ни одного события.
         categoryService.deleteCategory(catId);
@@ -39,6 +43,7 @@ public class CategoryControllerAdmin {
     }
 
     @PatchMapping(path = "/{catId}")
+    @Transactional
     public ResponseEntity<CategoryDto> updateCategory(@PathVariable(name = "catId") Long catId,
                                                       @RequestBody CategoryDto categoryDto) {
         //имя категории должно быть уникальным
