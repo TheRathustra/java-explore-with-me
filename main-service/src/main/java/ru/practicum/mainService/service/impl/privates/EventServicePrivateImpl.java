@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 public class EventServicePrivateImpl implements EventServicePrivate {
 
     private final EventRepositoryPrivate repository;
+
     private final CategoryRepositoryPublic categoryRepository;
 
     private final RequestRepositoryPublic requestRepository;

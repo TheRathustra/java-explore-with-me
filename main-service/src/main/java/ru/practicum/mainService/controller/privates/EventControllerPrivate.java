@@ -28,7 +28,8 @@ public class EventControllerPrivate {
                                          @RequestParam(name = "from", defaultValue = "0") Integer from,
                                          @RequestParam(name = "size", defaultValue = "10") Integer size) {
         //В случае, если по заданным фильтрам не найдено ни одного события, возвращает пустой список
-        return eventService.getEvents(userId, from, size);
+        List<EventShortDto> events = eventService.getEvents(userId, from, size);
+        return events;
     }
 
     @PostMapping(path = "users/{userId}/events")
