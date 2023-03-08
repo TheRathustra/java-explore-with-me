@@ -12,13 +12,13 @@ import java.time.temporal.ChronoUnit;
 @Component
 public class EventValidator {
 
-    public void ValidateEvent(NewEventDto eventDto) {
+    public void validateEvent(NewEventDto eventDto) {
         if (eventDto.getEventDate().isBefore(LocalDateTime.now().plus(2, ChronoUnit.HOURS))) {
             throw new EventValidationException("Field: eventDate. Error: должно содержать дату, которая еще не наступила. Value: " + eventDto.getEventDate());
         }
     }
 
-    public void ValidateEvent(UpdateEventUserRequest eventDto) {
+    public void validateEvent(UpdateEventUserRequest eventDto) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
         LocalDateTime eventDate = LocalDateTime.parse(eventDto.getEventDate(), formatter);

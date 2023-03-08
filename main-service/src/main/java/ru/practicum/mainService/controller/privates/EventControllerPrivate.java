@@ -37,7 +37,7 @@ public class EventControllerPrivate {
     public EventFullDto addEvent(@PathVariable(name = "userId") Long userId,
                                        @RequestBody NewEventDto newEventDto) {
         //дата и время на которые намечено событие не может быть раньше, чем через два часа от текущего момента
-        validator.ValidateEvent(newEventDto);
+        validator.validateEvent(newEventDto);
         return eventService.addEvent(userId, newEventDto);
     }
 
@@ -55,7 +55,7 @@ public class EventControllerPrivate {
                                                  @RequestBody UpdateEventUserRequest updateEventUserRequest) {
         //дата и время на которые намечено событие не может быть раньше,
         //чем через два часа от текущего момента (Ожидается код ошибки 409)
-        validator.ValidateEvent(updateEventUserRequest);
+        validator.validateEvent(updateEventUserRequest);
         return eventService.patchUserEventById(userId, eventId, updateEventUserRequest);
     }
 
