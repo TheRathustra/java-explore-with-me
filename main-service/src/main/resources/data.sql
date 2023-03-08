@@ -1,4 +1,4 @@
-/*
+
 DELETE FROM users;
 ALTER TABLE users ALTER COLUMN id RESTART WITH 1;
 
@@ -16,6 +16,8 @@ ALTER TABLE events_compilations ALTER COLUMN id RESTART WITH 1;
 
 DELETE FROM requests;
 ALTER TABLE requests ALTER COLUMN id RESTART WITH 1;
+
+/*
 
 INSERT INTO users (email, name) VALUES ('Test1@gmail.com', 'Test user 1');
 INSERT INTO users (email, name) VALUES ('Test2@gmail.com', 'Test user 2');
