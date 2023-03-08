@@ -1,6 +1,8 @@
 package ru.practicum.mainService.controller.privates;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainService.dto.event.*;
@@ -34,11 +36,12 @@ public class EventControllerPrivate {
 
     @PostMapping(path = "users/{userId}/events")
     @Transactional
-    public EventFullDto addEvent(@PathVariable(name = "userId") Long userId,
-                                       @RequestBody NewEventDto newEventDto) {
+    public ResponseEntity<EventFullDto> addEvent(@PathVariable(name = "userId") Long userId,
+                                                @RequestBody NewEventDto newEventDto) {
         //дата и время на которые намечено событие не может быть раньше, чем через два часа от текущего момента
         validator.validateEvent(newEventDto);
-        return eventService.addEvent(userId, newEventDto);
+        EventFullDto event = eventService.addEvent(userId, newEventDto);
+        return new ResponseEntity<>(event, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "users/{userId}/events/{eventId}")

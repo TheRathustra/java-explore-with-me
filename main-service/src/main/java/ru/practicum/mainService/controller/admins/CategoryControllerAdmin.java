@@ -31,7 +31,7 @@ public class CategoryControllerAdmin {
         //имя категории должно быть уникальным
         validator.validateCategory(newCategoryDto);
         CategoryDto categoryDto = categoryService.addCategory(newCategoryDto);
-        return new ResponseEntity<>(categoryDto, HttpStatus.OK);
+        return new ResponseEntity<>(categoryDto, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{catId}")

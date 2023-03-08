@@ -10,6 +10,8 @@ import ru.practicum.mainService.dto.compilation.UpdateCompilationRequest;
 import ru.practicum.mainService.service.api.admins.CompilationServiceAdmin;
 import ru.practicum.mainService.validator.CompilationValidator;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping(path = "/admin/compilations")
 public class CompilationControllerAdmin {
@@ -25,18 +27,22 @@ public class CompilationControllerAdmin {
     }
 
     @PostMapping
-    public CompilationDto saveCompilation(@RequestBody NewCompilationDto newCompilationDto) {
+    @Transactional
+    public ResponseEntity<CompilationDto> saveCompilation(@RequestBody NewCompilationDto newCompilationDto) {
         validator.validateCompilation(newCompilationDto);
-        return compilationService.saveCompilation(newCompilationDto);
+        CompilationDto compilationDto = compilationService.saveCompilation(newCompilationDto);
+        return new ResponseEntity<>(compilationDto, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{compId}")
+    @Transactional
     public ResponseEntity<Object> deleteCompilation(@PathVariable(name = "compId") Long compId) {
         compilationService.deleteCompilation(compId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping(path = "/{compId}")
+    @Transactional
     public CompilationDto updateCompilation(@PathVariable(name = "compId") Long compId,
                                             @RequestBody UpdateCompilationRequest updateCompilationRequest) {
         return compilationService.updateCompilation(compId, updateCompilationRequest);

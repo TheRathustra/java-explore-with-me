@@ -1,10 +1,13 @@
 package ru.practicum.mainService.controller.privates;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainService.dto.request.ParticipationRequestDto;
 import ru.practicum.mainService.service.api.privates.RequestServicePrivate;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -25,8 +28,9 @@ public class RequestControllerPrivate {
     }
 
     @PostMapping
-    public ParticipationRequestDto addParticipationRequest(@PathVariable(name = "userId") Long userId,
-                                                           @RequestParam(name = "eventId") Long eventId) {
+    @Transactional
+    public ResponseEntity<ParticipationRequestDto> addParticipationRequest(@PathVariable(name = "userId") Long userId,
+                                                                          @RequestParam(name = "eventId") Long eventId) {
         /*
         нельзя добавить повторный запрос (Ожидается код ошибки 409)
         инициатор события не может добавить запрос на участие в своём событии (Ожидается код ошибки 409)
@@ -35,10 +39,12 @@ public class RequestControllerPrivate {
         если для события отключена пре-модерация запросов на участие, то запрос должен автоматически перейти в
         состояние подтвержденного
          */
-        return requestService.addParticipationRequest(userId, eventId);
+        ParticipationRequestDto requestDto = requestService.addParticipationRequest(userId, eventId);
+        return new ResponseEntity<>(requestDto, HttpStatus.CREATED);
     }
 
     @PatchMapping(path = "{requestId}/cancel")
+    @Transactional
     public ParticipationRequestDto cancelRequest(@PathVariable(name = "userId") Long userId,
                                                  @PathVariable(name = "requestId") Long requestId) {
         return requestService.cancelRequest(userId, requestId);

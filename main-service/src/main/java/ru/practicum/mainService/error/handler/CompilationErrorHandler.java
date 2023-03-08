@@ -25,13 +25,13 @@ public class CompilationErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiError> handleInvalidCompilationException(final InvalidCompilationException e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("For the requested operation the conditions are not met.");
-        error.setStatus(HttpStatus.FORBIDDEN);
+        error.setStatus(HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
 }

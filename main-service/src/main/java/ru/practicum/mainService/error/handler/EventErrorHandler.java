@@ -20,12 +20,12 @@ import ru.practicum.mainService.error.exception.request.RequestParticipantLimitE
 public class EventErrorHandler {
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiError> handleEventValidationException(final EventValidationException e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("For the requested operation the conditions are not met.");
-        error.setStatus(HttpStatus.CONFLICT);
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+        error.setStatus(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
@@ -38,12 +38,12 @@ public class EventErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiError> handleEventNotFoundException(final EventNotFoundException e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("The required object was not found.");
-        error.setStatus(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        error.setStatus(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
@@ -74,12 +74,12 @@ public class EventErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiError> handleEventIncorrectStateForAdmin(final EventIncorrectStateForAdmin e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("For the requested operation the conditions are not met.");
-        error.setStatus(HttpStatus.FORBIDDEN);
-        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+        error.setStatus(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
 }

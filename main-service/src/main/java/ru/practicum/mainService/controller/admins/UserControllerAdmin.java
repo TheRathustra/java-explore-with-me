@@ -1,6 +1,8 @@
 package ru.practicum.mainService.controller.admins;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainService.dto.user.UserDto;
@@ -42,11 +44,12 @@ public class UserControllerAdmin {
 
     @PostMapping
     @Transactional
-    public UserDto registerUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
         validator.validateUser(userDto);
         User user = UserMapper.userDtoToEntity(userDto);
         User newUser = userService.create(user);
-        return UserMapper.entityToUserDto(newUser);
+        UserDto newUserDto = UserMapper.entityToUserDto(newUser);
+        return new ResponseEntity<>(newUserDto, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{userId}")
