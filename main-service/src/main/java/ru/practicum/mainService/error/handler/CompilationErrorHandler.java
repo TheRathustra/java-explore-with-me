@@ -9,6 +9,7 @@ import ru.practicum.mainService.controller.admins.CompilationControllerAdmin;
 import ru.practicum.mainService.controller.publics.CompilationControllerPublic;
 import ru.practicum.mainService.error.ApiError;
 import ru.practicum.mainService.error.exception.compilation.CompilationNotFountException;
+import ru.practicum.mainService.error.exception.compilation.InvalidCompilationException;
 
 @RestControllerAdvice(assignableTypes = {CompilationControllerPublic.class, CompilationControllerAdmin.class})
 public class CompilationErrorHandler {
@@ -21,6 +22,16 @@ public class CompilationErrorHandler {
         error.setStatus(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<ApiError> handleInvalidCompilationException(final InvalidCompilationException e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("For the requested operation the conditions are not met.");
+        error.setStatus(HttpStatus.FORBIDDEN);
+
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
 }
