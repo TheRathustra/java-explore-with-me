@@ -20,11 +20,11 @@ public class EventControllerAdmin {
     }
 
     @GetMapping
-    public List<EventFullDto> getEvents(@RequestParam(name = "users") List<Long> users,
-                                  @RequestParam(name = "states") List<String> states,
-                                  @RequestParam(name = "categories") List<Long> categories,
-                                  @RequestParam(name = "rangeStart") String rangeStart,
-                                  @RequestParam(name = "rangeEnd") String rangeEnd,
+    public List<EventFullDto> getEvents(@RequestParam(name = "users", required = false) List<Long> users,
+                                  @RequestParam(name = "states", required = false) List<String> states,
+                                  @RequestParam(name = "categories", required = false) List<Long> categories,
+                                  @RequestParam(name = "rangeStart", required = false) String rangeStart,
+                                  @RequestParam(name = "rangeEnd", required = false) String rangeEnd,
                                   @RequestParam(name = "from", defaultValue = "0") Integer from,
                                   @RequestParam(name = "size", defaultValue = "10") Integer size) {
         //Эндпоинт возвращает полную информацию обо всех событиях подходящих под переданные условия
