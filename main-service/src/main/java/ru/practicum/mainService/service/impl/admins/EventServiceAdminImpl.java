@@ -21,7 +21,6 @@ import ru.practicum.mainService.repository.admins.EventRepositoryAdmin;
 import ru.practicum.mainService.service.api.admins.EventServiceAdmin;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -65,22 +64,24 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         }
 
         Event event = eventOptional.get();
-        if ((updateEventAdminRequest.getStateAction() == StateAction.PUBLISH_EVENT) && event.getState() != State.PENDING) {
+        if ((updateEventAdminRequest.getStateAction() == StateAction.PUBLISH_EVENT)
+                && event.getState() != State.PENDING) {
             throw new EventIncorrectStateForAdmin("Cannot publish the event because it's not in the right state: "
                                                 + event.getState());
         }
 
-        if (updateEventAdminRequest.getStateAction() == StateAction.REJECT_EVENT && event.getState() == State.PUBLISHED) {
+        if (updateEventAdminRequest.getStateAction() == StateAction.REJECT_EVENT
+                && event.getState() == State.PUBLISHED) {
             throw new EventIncorrectStateForAdmin("Cannot publish the event because it's not in the right state: "
                     + event.getState());
         }
 
         if (updateEventAdminRequest.getStateAction() == StateAction.PUBLISH_EVENT
-                && event.getEventDate().isBefore(LocalDateTime.now().minus(1, ChronoUnit.HOURS))) {
+                && updateEventAdminRequest.getEventDate() != null
+                && updateEventAdminRequest.getEventDate().isBefore(LocalDateTime.now()
+                .minus(1, ChronoUnit.HOURS))) {
             throw new EventIncorrectStateForAdmin("Cannot publish the event because incorrect event date");
         }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
         if (updateEventAdminRequest.getAnnotation() != null)
             event.setAnnotation(updateEventAdminRequest.getAnnotation());
@@ -95,7 +96,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         if (updateEventAdminRequest.getDescription() != null)
             event.setDescription(updateEventAdminRequest.getDescription());
         if (updateEventAdminRequest.getEventDate() != null)
-            event.setEventDate(LocalDateTime.parse(updateEventAdminRequest.getEventDate(), formatter));
+            event.setEventDate(updateEventAdminRequest.getEventDate());
         if (updateEventAdminRequest.getLocation() != null) {
             event.setLat(updateEventAdminRequest.getLocation().getLat());
             event.setLon(updateEventAdminRequest.getLocation().getLon());

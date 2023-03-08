@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.mainService.error.exception.user.UserNotFoundException;
+import ru.practicum.mainService.error.exception.user.UserValidationException;
 import ru.practicum.mainService.model.User;
 import ru.practicum.mainService.repository.admins.UserRepositoryAdmin;
 import ru.practicum.mainService.service.api.admins.UserServiceAdmin;
@@ -24,6 +25,16 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
 
     @Override
     public User create(User user) {
+        User foundUser = repository.findByName(user.getName());
+        if (foundUser != null) {
+            throw new UserValidationException("");
+        }
+
+        foundUser = repository.findByEmail(user.getEmail());
+        if (foundUser != null) {
+            throw new UserValidationException("");
+        }
+
         return repository.save(user);
     }
 

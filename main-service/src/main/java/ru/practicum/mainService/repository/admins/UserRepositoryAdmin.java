@@ -10,4 +10,8 @@ public interface UserRepositoryAdmin extends JpaRepository<User, Long> {
 
     List<User> findAllByIdIn(List<Long> ids, Pageable pageable);
 
+    User findByName(String name);
+
+    User findByEmail(String email);
+
 }
