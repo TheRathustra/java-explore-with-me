@@ -52,7 +52,8 @@ public class EventMapper {
         dto.setLocation(new Location(entity.getLat(), entity.getLon()));
         dto.setPaid(entity.getPaid());
         dto.setParticipantLimit(entity.getParticipantLimit());
-        dto.setPublishedOn(entity.getPublishedOn().format(formatter));
+        if (entity.getPublishedOn() != null)
+            dto.setPublishedOn(entity.getPublishedOn().format(formatter));
         dto.setRequestModeration(entity.getRequestModeration());
         dto.setState(entity.getState());
         dto.setTitle(entity.getTitle());
