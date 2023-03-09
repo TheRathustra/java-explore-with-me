@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.practicum.mainService.error.exception.user.UserAlreadyExistException;
 import ru.practicum.mainService.error.exception.user.UserNotFoundException;
-import ru.practicum.mainService.error.exception.user.UserValidationException;
 import ru.practicum.mainService.model.User;
 import ru.practicum.mainService.repository.admins.UserRepositoryAdmin;
 import ru.practicum.mainService.service.api.admins.UserServiceAdmin;
@@ -27,12 +27,12 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
     public User create(User user) {
         User foundUser = repository.findByName(user.getName());
         if (foundUser != null) {
-            throw new UserValidationException("");
+            throw new UserAlreadyExistException("User with name = " + user.getName() + " already exist");
         }
 
         foundUser = repository.findByEmail(user.getEmail());
         if (foundUser != null) {
-            throw new UserValidationException("");
+            throw new UserAlreadyExistException("User with email = " + user.getEmail() + " already exist");
         }
 
         return repository.save(user);

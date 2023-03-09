@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.mainService.controller.admins.UserControllerAdmin;
 import ru.practicum.mainService.error.ApiError;
-import ru.practicum.mainService.error.exception.user.UserAlreayExistException;
+import ru.practicum.mainService.error.exception.user.UserAlreadyExistException;
 import ru.practicum.mainService.error.exception.user.UserNotFoundException;
 import ru.practicum.mainService.error.exception.user.UserValidationException;
 import ru.practicum.mainService.service.impl.publics.UserServicePublicImpl;
@@ -37,7 +37,7 @@ public class UserErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseEntity<ApiError> handleUserAlreayExistException(final UserAlreayExistException e) {
+    public ResponseEntity<ApiError> handleUserAlreadyExistException(final UserAlreadyExistException e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("Incorrectly made request.");
         error.setStatus(HttpStatus.CONFLICT);
