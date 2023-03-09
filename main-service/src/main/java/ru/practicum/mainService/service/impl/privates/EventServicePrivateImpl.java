@@ -10,6 +10,7 @@ import ru.practicum.mainService.dto.request.RequestMapper;
 import ru.practicum.mainService.error.exception.category.CategoryNotFoundException;
 import ru.practicum.mainService.error.exception.event.EventIncorrectState;
 import ru.practicum.mainService.error.exception.event.EventNotFoundException;
+import ru.practicum.mainService.error.exception.event.UserIsNotAnInitiatorOfEventException;
 import ru.practicum.mainService.error.exception.request.IncorrectRequestStatusException;
 import ru.practicum.mainService.error.exception.request.RequestParticipantLimitException;
 import ru.practicum.mainService.model.*;
@@ -65,7 +66,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         User user = userService.getUserById(userId);
 
         Event event = EventMapper.newEventDtoToEntity(eventDto);
-        event.setState(State.PENDING);
+        event.setState(State.PUBLISHED);
         event.setCategory(category.get());
         event.setInitiator(user);
         event.setCreatedOn(LocalDateTime.now());
@@ -93,6 +94,10 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         }
 
         Event event = eventOptional.get();
+        if (!event.getInitiator().getId().equals(userId)) {
+           throw new UserIsNotAnInitiatorOfEventException("Event published by " + event.getInitiator().getId() +
+                   " and user is " + userId);
+        }
 
         if (event.getState() != State.CANCELED && event.getState() != State.PENDING) {
             throw new EventIncorrectState("Event must not be published");

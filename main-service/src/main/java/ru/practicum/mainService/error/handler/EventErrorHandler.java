@@ -9,10 +9,7 @@ import ru.practicum.mainService.controller.admins.EventControllerAdmin;
 import ru.practicum.mainService.controller.privates.EventControllerPrivate;
 import ru.practicum.mainService.error.ApiError;
 import ru.practicum.mainService.error.exception.category.CategoryNotFoundException;
-import ru.practicum.mainService.error.exception.event.EventIncorrectState;
-import ru.practicum.mainService.error.exception.event.EventIncorrectStateForAdmin;
-import ru.practicum.mainService.error.exception.event.EventNotFoundException;
-import ru.practicum.mainService.error.exception.event.EventValidationException;
+import ru.practicum.mainService.error.exception.event.*;
 import ru.practicum.mainService.error.exception.request.IncorrectRequestStatusException;
 import ru.practicum.mainService.error.exception.request.RequestParticipantLimitException;
 
@@ -49,6 +46,15 @@ public class EventErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiError> handleEventIncorrectState(final EventIncorrectState e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("Incorrectly made request.");
+        error.setStatus(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiError> handleUserIsNotAnInitiatorOfEventException(final UserIsNotAnInitiatorOfEventException e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("Incorrectly made request.");
         error.setStatus(HttpStatus.BAD_REQUEST);
