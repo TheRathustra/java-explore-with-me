@@ -66,7 +66,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         User user = userService.getUserById(userId);
 
         Event event = EventMapper.newEventDtoToEntity(eventDto);
-        event.setState(State.PUBLISHED);
+        event.setState(State.PENDING);
         event.setCategory(category.get());
         event.setInitiator(user);
         event.setCreatedOn(LocalDateTime.now());
