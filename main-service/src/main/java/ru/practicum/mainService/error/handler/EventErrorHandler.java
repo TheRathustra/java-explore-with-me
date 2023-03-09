@@ -80,12 +80,12 @@ public class EventErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ApiError> handleEventIncorrectStateForAdmin(final EventIncorrectStateForAdmin e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("For the requested operation the conditions are not met.");
-        error.setStatus(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        error.setStatus(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
 }

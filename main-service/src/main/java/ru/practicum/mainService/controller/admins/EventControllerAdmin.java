@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainService.dto.event.EventFullDto;
 import ru.practicum.mainService.dto.event.UpdateEventAdminRequest;
 import ru.practicum.mainService.service.api.admins.EventServiceAdmin;
+import ru.practicum.mainService.validator.EventValidator;
 
 import java.util.List;
 
@@ -14,9 +15,12 @@ public class EventControllerAdmin {
 
     private final EventServiceAdmin eventService;
 
+    private final EventValidator validator;
+
     @Autowired
-    public EventControllerAdmin(EventServiceAdmin eventService) {
+    public EventControllerAdmin(EventServiceAdmin eventService, EventValidator validator) {
         this.eventService = eventService;
+        this.validator = validator;
     }
 
     @GetMapping
@@ -40,6 +44,7 @@ public class EventControllerAdmin {
         событие можно публиковать, только если оно в состоянии ожидания публикации (Ожидается код ошибки 409)
         событие можно отклонить, только если оно еще не опубликовано (Ожидается код ошибки 409)
          */
+        validator.validateEvent(updateEventAdminRequest);
         return eventService.updateEvent(eventId, updateEventAdminRequest);
     }
 
