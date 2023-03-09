@@ -8,7 +8,6 @@ import lombok.Setter;
 import ru.practicum.mainService.model.Location;
 import ru.practicum.mainService.model.StateAction;
 
-import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -37,8 +36,7 @@ public class UpdateEventAdminRequest {
 
     private Boolean paid;
 
-    @PositiveOrZero
-    private Integer participantLimit = 0;
+    private Integer participantLimit;
 
     private Boolean requestModeration;
 
