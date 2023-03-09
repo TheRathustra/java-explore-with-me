@@ -110,6 +110,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         if (updateEventAdminRequest.getStateAction() != null) {
             if (updateEventAdminRequest.getStateAction() == StateAction.PUBLISH_EVENT) {
                 event.setState(State.PUBLISHED);
+                event.setPublishedOn(LocalDateTime.now());
             } else {
                 event.setState(State.CANCELED);
             }
