@@ -69,6 +69,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         event.setCategory(category.get());
         event.setInitiator(user);
         event.setCreatedOn(LocalDateTime.now());
+        event.setConfirmedRequests(0);
         Event newEvent = repository.save(event);
 
         return EventMapper.entityToEventFullDto(newEvent);
