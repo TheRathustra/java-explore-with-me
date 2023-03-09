@@ -154,10 +154,12 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         Status newStatus = eventRequestStatusUpdateRequest.getStatus();
 
         userService.getUserById(userId);
-        Event event = repository.findByIdAndInitiatorId(eventId, userId);
-        if (event == null) {
+        Optional<Event> eventOptional = repository.findById(eventId);
+        if (eventOptional.isEmpty()) {
             throw new EventNotFoundException("Event with id=" + eventId + " was not found");
         }
+
+        Event event = eventOptional.get();
 
         Integer limit = event.getParticipantLimit();
 
