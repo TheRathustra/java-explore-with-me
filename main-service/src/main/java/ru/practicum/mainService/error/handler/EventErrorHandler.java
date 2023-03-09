@@ -88,4 +88,13 @@ public class EventErrorHandler {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ApiError> handleEventIncorrectDateException(final EventIncorrectDateException e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("For the requested operation the conditions are not met.");
+        error.setStatus(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.practicum.mainService.dto.event.NewEventDto;
 import ru.practicum.mainService.dto.event.UpdateEventAdminRequest;
 import ru.practicum.mainService.dto.event.UpdateEventUserRequest;
+import ru.practicum.mainService.error.exception.event.EventIncorrectDateException;
 import ru.practicum.mainService.error.exception.event.EventValidationException;
 
 import java.time.LocalDateTime;
@@ -63,7 +64,7 @@ public class EventValidator {
 
         if (eventDto.getEventDate() != null && eventDto.getEventDate()
                 .isBefore(LocalDateTime.now().plus(2, ChronoUnit.HOURS))) {
-            throw new EventValidationException("Field: eventDate. Error: должно содержать дату, " +
+            throw new EventIncorrectDateException("Field: eventDate. Error: должно содержать дату, " +
                     "которая еще не наступила. Value: " + eventDto.getEventDate());
         }
     }
