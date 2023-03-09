@@ -98,12 +98,14 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             throw new EventIncorrectState("Event must not be published");
         }
 
-        Optional<Category> category = categoryRepository.findById(eventDto.getCategory());
-        if (category.isEmpty()) {
-            throw new CategoryNotFoundException("Category with id=" + eventDto.getCategory() + "was not found");
+        if (eventDto.getCategory() != null) {
+            Optional<Category> category = categoryRepository.findById(eventDto.getCategory());
+            if (category.isEmpty()) {
+                throw new CategoryNotFoundException("Category with id=" + eventDto.getCategory() + "was not found");
+            }
+            event.setCategory(category.get());
         }
 
-        event.setCategory(category.get());
         if (eventDto.getAnnotation() != null)
             event.setAnnotation(eventDto.getAnnotation());
         if (eventDto.getDescription() != null)
