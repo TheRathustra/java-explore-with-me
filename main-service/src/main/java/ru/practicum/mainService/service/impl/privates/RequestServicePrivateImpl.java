@@ -64,7 +64,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
             throw new InvalidRequestException("Event not published");
         }
 
-        if ((event.getParticipantLimit() >= event.getConfirmedRequests()) && event.getRequestModeration() &&
+        if ((event.getParticipantLimit() <= event.getConfirmedRequests()) && event.getRequestModeration() &&
                     event.getParticipantLimit() > 0) {
             throw new InvalidRequestException("Event reached limit");
         }
