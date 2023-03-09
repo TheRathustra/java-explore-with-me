@@ -7,7 +7,6 @@ import lombok.Setter;
 import ru.practicum.mainService.model.Location;
 import ru.practicum.mainService.model.StateAction;
 
-import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -34,7 +33,6 @@ public class UpdateEventUserRequest {
 
     private Boolean paid;
 
-    @PositiveOrZero
     private Integer participantLimit;
 
     private Boolean requestModeration;
