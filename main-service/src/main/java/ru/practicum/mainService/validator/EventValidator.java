@@ -40,6 +40,11 @@ public class EventValidator {
                     "которая еще не наступила. Value: " + eventDto.getEventDate());
         }
 
+        if (eventDto.getParticipantLimit() != null && eventDto.getParticipantLimit() < 0) {
+            throw new EventValidationException("Field: participantLimit. Error: должно содержать положительное число. " +
+                    "Value: " + eventDto.getParticipantLimit());
+        }
+
     }
 
     public void validateEvent(UpdateEventUserRequest eventDto) {
