@@ -168,9 +168,10 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         Event event = eventOptional.get();
 
         Integer limit = event.getParticipantLimit();
+        Integer confirmed = event.getConfirmedRequests();
 
         if ((event.getParticipantLimit() > 0 && event.getRequestModeration())
-                && limit <= event.getConfirmedRequests()) {
+                && limit <= confirmed) {
             throw new RequestParticipantLimitException("The participant limit has been reached");
         }
 
@@ -186,13 +187,15 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
             if (newStatus == Status.CONFIRMED) {
                 confirmedRequests.add(RequestMapper.requestToParticipationRequestDto(request));
+                confirmed++;
+                event.setConfirmedRequests(confirmed);
                 limit++;
             }
             if (newStatus == Status.REJECTED)
                 rejectedRequests.add(RequestMapper.requestToParticipationRequestDto(request));
 
             if ((event.getParticipantLimit() > 0 && event.getRequestModeration())
-                    && limit <= event.getConfirmedRequests()) {
+                    && limit <= confirmed) {
                 newStatus = Status.REJECTED;
             }
         }
