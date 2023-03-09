@@ -39,7 +39,7 @@ public class EventValidator {
 
         if (eventDto.getEventDate() == null || eventDto.getEventDate().isBefore(LocalDateTime.now()
                 .plus(2, ChronoUnit.HOURS))) {
-            throw new EventValidationException("Field: eventDate. Error: должно содержать дату, " +
+            throw new EventIncorrectDateException("Field: eventDate. Error: должно содержать дату, " +
                     "которая еще не наступила. Value: " + eventDto.getEventDate());
         }
 
@@ -56,7 +56,7 @@ public class EventValidator {
 
         if (eventDto.getEventDate() != null && LocalDateTime.parse(eventDto.getEventDate(), formatter)
                 .isBefore(LocalDateTime.now().plus(2, ChronoUnit.HOURS))) {
-            throw new EventValidationException("Field: eventDate. Error: должно содержать дату, " +
+            throw new EventIncorrectDateException("Field: eventDate. Error: должно содержать дату, " +
                     "которая еще не наступила. Value: " + eventDto.getEventDate());
         }
     }

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class EventSpecs {
 
@@ -17,7 +18,7 @@ public class EventSpecs {
 
     public static Specification<Event> byStates(List<String> states) {
         return (root, query, cb) -> states == null ? null : cb.in(root.get("state")).value(states.stream().map(
-                State::valueOf));
+                State::valueOf).collect(Collectors.toList()));
     }
 
     public static Specification<Event> byCategories(List<Long> categories) {
