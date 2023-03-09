@@ -7,6 +7,7 @@ import ru.practicum.mainService.model.State;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 public class EventSpecs {
 
@@ -24,13 +25,13 @@ public class EventSpecs {
     }
 
     public static Specification<Event> byRangeStart(String rangeStart) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
         return (root, query, cb) -> rangeStart == null ? null : cb.greaterThan(root.get("eventDate"),
                 LocalDateTime.parse(rangeStart, formatter));
     }
 
     public static Specification<Event> byRangeEnd(String rangeEnd) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
         return (root, query, cb) -> rangeEnd == null ? null : cb.lessThan(root.get("eventDate"),
                 LocalDateTime.parse(rangeEnd, formatter));
     }

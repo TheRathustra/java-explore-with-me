@@ -10,6 +10,7 @@ import ru.practicum.mainService.error.exception.event.EventValidationException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 @Component
 public class EventValidator {
@@ -51,7 +52,7 @@ public class EventValidator {
 
     public void validateEvent(UpdateEventUserRequest eventDto) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
 
         if (eventDto.getEventDate() != null && LocalDateTime.parse(eventDto.getEventDate(), formatter)
                 .isBefore(LocalDateTime.now().plus(2, ChronoUnit.HOURS))) {

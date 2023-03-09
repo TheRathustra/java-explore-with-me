@@ -6,6 +6,7 @@ import ru.practicum.mainService.model.Event;
 import ru.practicum.mainService.model.Location;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class EventMapper {
 
@@ -38,7 +39,7 @@ public class EventMapper {
 
     public static EventFullDto entityToEventFullDto(Event entity) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
 
         EventFullDto dto = new EventFullDto();
         dto.setId(entity.getId());

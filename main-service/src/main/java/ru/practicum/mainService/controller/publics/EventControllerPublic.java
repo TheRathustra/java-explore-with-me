@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping(path = "/events")
@@ -64,7 +65,7 @@ public class EventControllerPublic {
     }
 
     private HitDto makeHitDto(HttpServletRequest request) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
 
         HitDto hitDto = new HitDto();
         hitDto.setIp(request.getRemoteAddr());

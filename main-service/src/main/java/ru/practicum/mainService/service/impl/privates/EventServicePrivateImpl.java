@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     private final UserServicePublic userService;
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
 
     @Autowired
     public EventServicePrivateImpl(EventRepositoryPrivate repository, CategoryRepositoryPublic categoryRepository, RequestRepositoryPublic requestRepository, UserServicePublic userService) {
