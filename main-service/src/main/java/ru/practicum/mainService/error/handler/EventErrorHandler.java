@@ -20,12 +20,12 @@ import ru.practicum.mainService.error.exception.request.RequestParticipantLimitE
 public class EventErrorHandler {
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ApiError> handleEventValidationException(final EventValidationException e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("For the requested operation the conditions are not met.");
-        error.setStatus(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        error.setStatus(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler
@@ -47,12 +47,12 @@ public class EventErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ApiError> handleEventIncorrectState(final EventIncorrectState e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("Incorrectly made request.");
-        error.setStatus(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        error.setStatus(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler
