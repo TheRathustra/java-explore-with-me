@@ -174,19 +174,21 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         }
 
         List<Request> requests = requestRepository
-                .findAllByIdInAndRequesterIdAndEventId(eventRequestStatusUpdateRequest.getRequestIds(), userId, eventId);
+                .findAllByIdIn(eventRequestStatusUpdateRequest.getRequestIds());
+
         for (Request request : requests) {
             if (request.getStatus() != Status.PENDING) {
                 throw new IncorrectRequestStatusException("Request must have status PENDING");
             }
+
+            request.setStatus(newStatus);
+
             if (newStatus == Status.CONFIRMED) {
                 confirmedRequests.add(RequestMapper.requestToParticipationRequestDto(request));
                 limit++;
             }
             if (newStatus == Status.REJECTED)
                 rejectedRequests.add(RequestMapper.requestToParticipationRequestDto(request));
-
-            request.setStatus(newStatus);
 
             if ((event.getParticipantLimit() > 0 && event.getRequestModeration())
                     && limit <= event.getConfirmedRequests()) {
