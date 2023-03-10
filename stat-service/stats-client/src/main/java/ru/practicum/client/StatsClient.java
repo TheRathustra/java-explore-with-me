@@ -17,10 +17,6 @@ import java.util.Map;
 @Service
 public class StatsClient extends BaseClient {
 
-    private static final String API_PREFIX_HIT = "/hit";
-
-    private static final String API_PREFIX_STATS = "/stats";
-
     @Autowired
     public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
@@ -32,7 +28,7 @@ public class StatsClient extends BaseClient {
     }
 
     public ResponseEntity<Object> sendHit(HitDto hitDto) {
-        return post(API_PREFIX_HIT, hitDto);
+        return post("/hit", hitDto);
     }
 
     public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
@@ -42,7 +38,7 @@ public class StatsClient extends BaseClient {
                 "end",    end.format(formatter),
                 "uris",   uris,
                 "unique", unique);
-        return get(API_PREFIX_STATS + "?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
+        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 
 }

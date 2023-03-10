@@ -128,8 +128,6 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             event.setTitle(updateEventAdminRequest.getTitle());
 
         Event updatedEvent = repository.save(event);
-        Map<Long, Long> stats = eventStatsService.getStats(List.of(updatedEvent), false);
-        updatedEvent.setViews(stats.get(eventId));
 
         return EventMapper.entityToEventFullDto(updatedEvent);
     }
