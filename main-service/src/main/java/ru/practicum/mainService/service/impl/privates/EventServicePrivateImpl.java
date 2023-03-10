@@ -17,15 +17,13 @@ import ru.practicum.mainService.model.*;
 import ru.practicum.mainService.repository.privates.EventRepositoryPrivate;
 import ru.practicum.mainService.repository.publics.CategoryRepositoryPublic;
 import ru.practicum.mainService.repository.publics.RequestRepositoryPublic;
+import ru.practicum.mainService.service.api.EventStatsService;
 import ru.practicum.mainService.service.api.privates.EventServicePrivate;
 import ru.practicum.mainService.service.api.publics.UserServicePublic;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,14 +37,17 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     private final UserServicePublic userService;
 
+    private final EventStatsService eventStatsService;
+
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
 
     @Autowired
-    public EventServicePrivateImpl(EventRepositoryPrivate repository, CategoryRepositoryPublic categoryRepository, RequestRepositoryPublic requestRepository, UserServicePublic userService) {
+    public EventServicePrivateImpl(EventRepositoryPrivate repository, CategoryRepositoryPublic categoryRepository, RequestRepositoryPublic requestRepository, UserServicePublic userService, EventStatsService eventStatsService) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
         this.requestRepository = requestRepository;
         this.userService = userService;
+        this.eventStatsService = eventStatsService;
     }
 
     @Override
@@ -54,6 +55,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         int page = from / size;
         Pageable pageRequest = PageRequest.of(page, size);
         List<Event> events = repository.findAllByInitiatorId(userId, pageRequest);
+        Map<Long, Long> stats = eventStatsService.getStats(events, false);
+        eventStatsService.setViews(stats, events);
         return events.stream().map(EventMapper::entityToEventShortDto).collect(Collectors.toList());
     }
 
@@ -83,6 +86,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (event == null) {
             throw new EventNotFoundException("Event with id=" + eventId + " was not found");
         }
+        Map<Long, Long> stats = eventStatsService.getStats(List.of(event), false);
+        event.setViews(stats.get(eventId));
         return EventMapper.entityToEventFullDto(event);
     }
 
@@ -138,6 +143,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             event.setTitle(eventDto.getTitle());
 
         Event updatedEvent = repository.save(event);
+        Map<Long, Long> stats = eventStatsService.getStats(List.of(updatedEvent), false);
+        updatedEvent.setViews(stats.get(eventId));
 
         return EventMapper.entityToEventFullDto(updatedEvent);
     }

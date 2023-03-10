@@ -20,6 +20,7 @@ public class EventMapper {
         dto.setInitiator(UserMapper.entityToUserShortDto(entity.getInitiator()));
         dto.setPaid(entity.getPaid());
         dto.setTitle(entity.getTitle());
+        dto.setViews(entity.getViews());
         return dto;
     }
 
@@ -58,7 +59,7 @@ public class EventMapper {
         dto.setRequestModeration(entity.getRequestModeration());
         dto.setState(entity.getState());
         dto.setTitle(entity.getTitle());
-        dto.setViews(0);
+        dto.setViews(entity.getViews());
 
         return dto;
     }

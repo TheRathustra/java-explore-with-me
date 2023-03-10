@@ -18,11 +18,13 @@ import ru.practicum.mainService.model.State;
 import ru.practicum.mainService.model.StateAction;
 import ru.practicum.mainService.repository.admins.CategoryRepositoryAdmin;
 import ru.practicum.mainService.repository.admins.EventRepositoryAdmin;
+import ru.practicum.mainService.service.api.EventStatsService;
 import ru.practicum.mainService.service.api.admins.EventServiceAdmin;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,10 +35,13 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
 
     private final CategoryRepositoryAdmin categoryRepository;
 
+    private final EventStatsService eventStatsService;
+
     @Autowired
-    public EventServiceAdminImpl(EventRepositoryAdmin repository, CategoryRepositoryAdmin categoryRepository) {
+    public EventServiceAdminImpl(EventRepositoryAdmin repository, CategoryRepositoryAdmin categoryRepository, EventStatsService eventStatsService) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
+        this.eventStatsService = eventStatsService;
     }
 
     @Override
@@ -52,6 +57,8 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         Pageable pageRequest = PageRequest.of(page, size);
 
         List<Event> events = repository.findAll(spec, pageRequest).toList();
+        Map<Long, Long> stats = eventStatsService.getStats(events, false);
+        eventStatsService.setViews(stats, events);
 
         return events.stream().map(EventMapper::entityToEventFullDto).collect(Collectors.toList());
     }
@@ -121,6 +128,8 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             event.setTitle(updateEventAdminRequest.getTitle());
 
         Event updatedEvent = repository.save(event);
+        Map<Long, Long> stats = eventStatsService.getStats(List.of(updatedEvent), false);
+        updatedEvent.setViews(stats.get(eventId));
 
         return EventMapper.entityToEventFullDto(updatedEvent);
     }

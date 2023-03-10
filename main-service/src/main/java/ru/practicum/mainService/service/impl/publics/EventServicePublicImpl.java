@@ -8,11 +8,16 @@ import org.springframework.stereotype.Service;
 import ru.practicum.mainService.dto.event.EventMapper;
 import ru.practicum.mainService.dto.event.EventShortDto;
 import ru.practicum.mainService.dto.event.EventSpecs;
+import ru.practicum.mainService.error.exception.event.EventNotFoundException;
 import ru.practicum.mainService.model.Event;
 import ru.practicum.mainService.repository.publics.EventRepositoryPublic;
+import ru.practicum.mainService.service.api.EventStatsService;
 import ru.practicum.mainService.service.api.publics.EventServicePublic;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,16 +25,21 @@ public class EventServicePublicImpl implements EventServicePublic {
 
     private final EventRepositoryPublic repository;
 
+    private final EventStatsService eventStatsService;
+
     @Autowired
-    public EventServicePublicImpl(EventRepositoryPublic repository) {
+    public EventServicePublicImpl(EventRepositoryPublic repository, EventStatsService eventStatsService) {
         this.repository = repository;
+        this.eventStatsService = eventStatsService;
     }
 
     @Override
     public List<EventShortDto> getEvents(String text, List<Long> categories,
                                          Boolean paid, String rangeStart,
                                          String rangeEnd, Boolean onlyAvailable,
-                                         String sort, Integer from, Integer size) {
+                                         String sort, Integer from, Integer size, HttpServletRequest request) {
+
+        eventStatsService.sendStats(request);
 
         Specification<Event> spec = EventSpecs.byText(text)
                 .and(EventSpecs.byCategories(categories))
@@ -41,12 +51,27 @@ public class EventServicePublicImpl implements EventServicePublic {
         Pageable pageRequest = PageRequest.of(page, size);
 
         List<Event> events = repository.findAll(spec, pageRequest);
+        Map<Long, Long> stats = eventStatsService.getStats(events, false);
+        eventStatsService.setViews(stats, events);
 
         return events.stream().map(EventMapper::entityToEventShortDto).collect(Collectors.toList());
     }
 
     @Override
-    public EventShortDto getEventById(Long eventId) {
-        return null;
+    public EventShortDto getEventById(Long eventId, HttpServletRequest request) {
+
+        eventStatsService.sendStats(request);
+
+        Optional<Event> eventOptional = repository.findById(eventId);
+        if (eventOptional.isEmpty()) {
+            throw new EventNotFoundException("Event with id=" + eventId + " was not found");
+        }
+
+        Event event = eventOptional.get();
+        Map<Long, Long> stats = eventStatsService.getStats(List.of(event), false);
+        event.setViews(stats.get(eventId));
+
+        return EventMapper.entityToEventShortDto(event);
     }
+
 }

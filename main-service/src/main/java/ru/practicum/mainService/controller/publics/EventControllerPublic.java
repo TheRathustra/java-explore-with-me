@@ -2,16 +2,11 @@ package ru.practicum.mainService.controller.publics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.client.StatsClient;
 import ru.practicum.mainService.dto.event.EventShortDto;
 import ru.practicum.mainService.service.api.publics.EventServicePublic;
-import ru.practicum.statsDto.dto.HitDto;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 @RequestMapping(path = "/events")
@@ -19,12 +14,9 @@ public class EventControllerPublic {
 
     private final EventServicePublic eventService;
 
-    private final StatsClient client;
-
     @Autowired
-    public EventControllerPublic(EventServicePublic eventService, StatsClient client) {
+    public EventControllerPublic(EventServicePublic eventService) {
         this.eventService = eventService;
-        this.client = client;
     }
 
     @GetMapping
@@ -45,10 +37,7 @@ public class EventControllerPublic {
         информация о каждом событии должна включать в себя количество просмотров и количество уже одобренных заявок на участие
         информацию о том, что по этому эндпоинту был осуществлен и обработан запрос, нужно сохранить в сервисе статистики
          */
-
-        //HitDto hitDto = makeHitDto(request);
-        //client.sendHit(hitDto);
-        return eventService.getEvents(text, categories, paid,rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+        return eventService.getEvents(text, categories, paid,rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
     }
 
     @GetMapping(path = "/{id}")
@@ -59,21 +48,7 @@ public class EventControllerPublic {
         информацию о том, что по этому эндпоинту был осуществлен и обработан запрос, нужно сохранить в сервисе
         статистики
          */
-        //HitDto hitDto = makeHitDto(request);
-        //client.sendHit(hitDto);
-        return eventService.getEventById(id);
-    }
-
-    private HitDto makeHitDto(HttpServletRequest request) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
-
-        HitDto hitDto = new HitDto();
-        hitDto.setIp(request.getRemoteAddr());
-        hitDto.setUri(request.getRequestURI());
-        hitDto.setTimestamp(LocalDateTime.now().format(formatter));
-        hitDto.setApp("main-service");
-
-        return hitDto;
+        return eventService.getEventById(id, request);
     }
 
 }
