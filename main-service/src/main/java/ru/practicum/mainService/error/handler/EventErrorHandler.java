@@ -12,6 +12,7 @@ import ru.practicum.mainService.error.exception.category.CategoryNotFoundExcepti
 import ru.practicum.mainService.error.exception.event.*;
 import ru.practicum.mainService.error.exception.request.IncorrectRequestStatusException;
 import ru.practicum.mainService.error.exception.request.RequestParticipantLimitException;
+import ru.practicum.mainService.error.exception.user.UserNotFoundException;
 
 @RestControllerAdvice(assignableTypes = {EventControllerPrivate.class, EventControllerAdmin.class})
 public class EventErrorHandler {
@@ -19,6 +20,15 @@ public class EventErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiError> handleEventValidationException(final EventValidationException e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("For the requested operation the conditions are not met.");
+        error.setStatus(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiError> handleUserNotFoundException(final UserNotFoundException e) {
         ApiError error = new ApiError(e.getMessage());
         error.setReason("For the requested operation the conditions are not met.");
         error.setStatus(HttpStatus.BAD_REQUEST);
