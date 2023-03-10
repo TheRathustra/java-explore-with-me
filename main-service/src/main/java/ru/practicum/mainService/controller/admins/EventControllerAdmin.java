@@ -7,6 +7,7 @@ import ru.practicum.mainService.dto.event.UpdateEventAdminRequest;
 import ru.practicum.mainService.service.api.admins.EventServiceAdmin;
 import ru.practicum.mainService.validator.EventValidator;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -37,6 +38,7 @@ public class EventControllerAdmin {
     }
 
     @PatchMapping(path = "/{eventId}")
+    @Transactional
     public EventFullDto updateEvent(@PathVariable(name = "eventId") Long eventId,
                                     @RequestBody UpdateEventAdminRequest updateEventAdminRequest) {
         /*Редактирование данных любого события администратором. Валидация данных не требуется. Обратите внимание:

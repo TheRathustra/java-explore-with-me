@@ -40,7 +40,7 @@ public class StatsClient extends BaseClient {
         Map<String, Object> parameters = Map.of(
                 "start",  start.format(formatter),
                 "end",    end.format(formatter),
-                "uris",   String.join(",", uris),
+                "uris",   uris,
                 "unique", unique);
         return get(API_PREFIX_STATS + "?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }

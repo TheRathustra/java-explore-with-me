@@ -2,6 +2,7 @@ package ru.practicum.mainService.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.practicum.client.StatsClient;
@@ -30,20 +31,30 @@ public class EventStatsServiceImpl implements EventStatsService {
     @Override
     public Map<Long, Long> getStats(List<Event> events, Boolean unique) {
 
-        Optional<LocalDateTime> start = events.stream()
+        Optional<LocalDateTime> startOptional = events.stream()
                 .map(Event::getPublishedOn)
                 .filter(Objects::nonNull).min(LocalDateTime::compareTo);
 
-        if (start.isEmpty()) {
+        if (startOptional.isEmpty()) {
             return new HashMap<>();
         }
 
-        LocalDateTime endTime  = LocalDateTime.now();
+        LocalDateTime start = startOptional.get();
+
+        if (start.isAfter(LocalDateTime.now())) {
+            return new HashMap<>();
+        }
+
+        LocalDateTime end = LocalDateTime.now();
 
         List<Long> ids = events.stream().map(Event::getId).collect(Collectors.toList());
         List<String> uris = ids.stream().map(id -> "/events/" + id).collect(Collectors.toList());
 
-        ResponseEntity<Object> response = statsClient.getStats(start.get(), endTime, uris, unique);
+        ResponseEntity<Object> response = statsClient.getStats(start, end, uris, unique);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return new HashMap<>();
+        }
+
         List<HitDtoAnswer> stats;
         ObjectMapper mapper = new ObjectMapper();
         try {

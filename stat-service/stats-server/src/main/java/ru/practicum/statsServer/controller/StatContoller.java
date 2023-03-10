@@ -1,7 +1,7 @@
 package ru.practicum.statsServer.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +13,20 @@ import ru.practicum.statsServer.service.StatService;
 import ru.practicum.statsServer.validator.HitValidator;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 public class StatContoller {
 
     private final StatService statService;
 
     private final HitValidator validator;
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
 
     @Autowired
     public StatContoller(StatService statService, HitValidator validator) {
@@ -37,10 +42,17 @@ public class StatContoller {
     }
 
     @GetMapping(path = "/stats")
-    public ResponseEntity<List<HitDtoAnswer>> getStats(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
-                                    @RequestParam(name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
+    public ResponseEntity<List<HitDtoAnswer>> getStats(@RequestParam(name = "start") String startDate,
+                                    @RequestParam(name = "end") String endDate,
                                     @RequestParam(name = "uris", defaultValue = "") String[] uris,
-                                    @RequestParam(name = "unique", required = false, defaultValue = "false") boolean unique) {
+                                    @RequestParam(name = "unique", required = false, defaultValue = "false") Boolean unique) {
+
+        LocalDateTime start = LocalDateTime.parse(startDate, formatter);
+        LocalDateTime end = LocalDateTime.parse(endDate, formatter);
+
+        log.info("get stats from = {} till = {} about uris = {} with unique ids = {}",
+                startDate, endDate, uris, unique);
+
         if (start.isAfter(LocalDateTime.now())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
