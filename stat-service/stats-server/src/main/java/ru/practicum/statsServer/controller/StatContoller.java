@@ -12,7 +12,6 @@ import ru.practicum.statsServer.model.HitMapper;
 import ru.practicum.statsServer.service.StatService;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,13 +29,17 @@ public class StatContoller {
     }
 
     @GetMapping(path = "/stats")
-    public List<HitDtoAnswer> getStats(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+    public ResponseEntity<List<HitDtoAnswer>> getStats(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
                                     @RequestParam(name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
-                                    @RequestParam(name = "uris", required = false) String[] uris,
+                                    @RequestParam(name = "uris", defaultValue = "") String[] uris,
                                     @RequestParam(name = "unique", required = false, defaultValue = "false") boolean unique) {
-        List<String> urisList = uris == null ? Collections.emptyList() : List.of(uris);
-        List<Hit> hits = statService.getStats(start, end, urisList, unique);
-        return hits.stream().map(HitMapper::inctanceToHitDtoAnswer).collect(Collectors.toList());
+        if (start.isAfter(LocalDateTime.now())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        List<Hit> hits = statService.getStats(start, end, List.of(uris), unique);
+        return new ResponseEntity<>(hits.stream().map(HitMapper::inctanceToHitDtoAnswer)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
 }

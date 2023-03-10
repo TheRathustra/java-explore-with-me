@@ -38,9 +38,9 @@ public class StatsClient extends BaseClient {
     public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> parameters = Map.of(
-                "start", start.format(formatter),
-                "end", end.format(formatter),
-                "uris", uris,
+                "start",  start.format(formatter),
+                "end",    end.format(formatter),
+                "uris",   String.join(",", uris),
                 "unique", unique);
         return get(API_PREFIX_STATS + "?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
