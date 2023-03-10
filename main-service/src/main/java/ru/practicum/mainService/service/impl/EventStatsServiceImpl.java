@@ -28,8 +28,7 @@ public class EventStatsServiceImpl implements EventStatsService {
     }
 
     @Override
-    public Map<Long, Long> getStats(List<Event> events,
-                                    Boolean unique) {
+    public Map<Long, Long> getStats(List<Event> events, Boolean unique) {
 
         Optional<LocalDateTime> start = events.stream()
                 .map(Event::getPublishedOn)
@@ -44,7 +43,7 @@ public class EventStatsServiceImpl implements EventStatsService {
         List<Long> ids = events.stream().map(Event::getId).collect(Collectors.toList());
         List<String> uris = ids.stream().map(id -> "/events/" + id).collect(Collectors.toList());
 
-        ResponseEntity<Object> response = statsClient.getStats(start.get(), endTime , uris, unique);
+        ResponseEntity<Object> response = statsClient.getStats(start.get(), endTime, uris, unique);
         List<HitDtoAnswer> stats;
         ObjectMapper mapper = new ObjectMapper();
         try {
