@@ -31,18 +31,21 @@ public class EventStatsServiceImpl implements EventStatsService {
     @Override
     public Map<Long, Long> getStats(List<Event> events, Boolean unique) {
 
+        Map<Long, Long> views = new HashMap<>();
+        events.forEach(e -> views.put(e.getId(), 0L));
+
         Optional<LocalDateTime> startOptional = events.stream()
                 .map(Event::getPublishedOn)
                 .filter(Objects::nonNull).min(LocalDateTime::compareTo);
 
         if (startOptional.isEmpty()) {
-            return new HashMap<>();
+            return views;
         }
 
         LocalDateTime start = startOptional.get();
 
         if (start.isAfter(LocalDateTime.now())) {
-            return new HashMap<>();
+            return views;
         }
 
         LocalDateTime end = LocalDateTime.now();
@@ -52,7 +55,7 @@ public class EventStatsServiceImpl implements EventStatsService {
 
         ResponseEntity<Object> response = statsClient.getStats(start, end, uris, unique);
         if (response.getStatusCode() != HttpStatus.OK) {
-            return new HashMap<>();
+            return views;
         }
 
         List<HitDtoAnswer> stats;
@@ -63,7 +66,6 @@ public class EventStatsServiceImpl implements EventStatsService {
             throw new RuntimeException(e.getMessage());
         }
 
-        Map<Long, Long> views = new HashMap<>();
         for (Long id : ids) {
             Optional<Long> viewsOptional = stats.stream()
                     .filter(s -> s.getUri().equals("/events/" + id)).map(HitDtoAnswer::getHits).findFirst();
