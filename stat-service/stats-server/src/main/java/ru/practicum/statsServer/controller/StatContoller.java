@@ -44,7 +44,7 @@ public class StatContoller {
     @GetMapping(path = "/stats")
     public ResponseEntity<List<HitDtoAnswer>> getStats(@RequestParam(name = "start") String startDate,
                                     @RequestParam(name = "end") String endDate,
-                                    @RequestParam(name = "uris", defaultValue = "") String[] uris,
+                                    @RequestParam(name = "uris", defaultValue = "") List<String> uris,
                                     @RequestParam(name = "unique", required = false, defaultValue = "false") Boolean unique) {
 
         LocalDateTime start = LocalDateTime.parse(startDate, formatter);
@@ -53,11 +53,7 @@ public class StatContoller {
         log.info("get stats from = {} till = {} about uris = {} with unique ids = {}",
                 startDate, endDate, uris, unique);
 
-        if (start.isAfter(LocalDateTime.now())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        List<Hit> hits = statService.getStats(start, end, List.of(uris), unique);
+        List<Hit> hits = statService.getStats(start, end, uris, unique);
         return new ResponseEntity<>(hits.stream().map(HitMapper::inctanceToHitDtoAnswer)
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
