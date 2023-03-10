@@ -83,7 +83,13 @@ public class EventStatsServiceImpl implements EventStatsService {
     }
 
     public void setViews(Map<Long, Long> views, List<Event> events) {
-        events.forEach(e -> e.setViews(views.get(e.getId())));
+        for (Event event : events) {
+            Long view = views.get(event.getId());
+            if (view == null) {
+                view = 0L;
+            }
+            event.setViews(view);
+        }
     }
 
     private HitDto makeHitDto(HttpServletRequest request) {
