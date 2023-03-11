@@ -1,5 +1,6 @@
 package ru.practicum.mainService.controller.admins;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainService.dto.event.EventFullDto;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "admin/events")
+@Slf4j
 public class EventControllerAdmin {
 
     private final EventServiceAdmin eventService;
@@ -34,6 +36,9 @@ public class EventControllerAdmin {
                                   @RequestParam(name = "size", defaultValue = "10") Integer size) {
         //Эндпоинт возвращает полную информацию обо всех событиях подходящих под переданные условия
         //В случае, если по заданным фильтрам не найдено ни одного события, возвращает пустой список
+        log.info("get events users = {} states = {} categories = {} rangeStart = {} rangeEnd = {} from = {} size = {}",
+                users, states, categories, rangeStart, rangeEnd, from, size);
+
         return eventService.getEvents(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 

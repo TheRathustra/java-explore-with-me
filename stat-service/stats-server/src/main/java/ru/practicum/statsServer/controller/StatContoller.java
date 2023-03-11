@@ -50,7 +50,7 @@ public class StatContoller {
         LocalDateTime start = LocalDateTime.parse(startDate, formatter);
         LocalDateTime end = LocalDateTime.parse(endDate, formatter);
 
-        log.info("get stats from = {} till = {} about uris = {} with unique ids = {}",
+        log.info("get stats start = {} end = {} uris = {} ids = {}",
                 startDate, endDate, uris, unique);
 
         List<Hit> hits = statService.getStats(start, end, uris, unique);

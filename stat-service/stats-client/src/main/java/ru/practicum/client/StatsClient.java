@@ -1,5 +1,6 @@
 package ru.practicum.client;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -14,17 +15,19 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class StatsClient extends BaseClient {
 
     @Autowired
-    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatsClient(@Value("${stats-service.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                         .build()
         );
+        log.info("creating stats with url = {}", serverUrl);
     }
 
     public ResponseEntity<Object> sendHit(HitDto hitDto) {
@@ -38,6 +41,10 @@ public class StatsClient extends BaseClient {
                 "end",    end.format(formatter),
                 "uris",   uris,
                 "unique", unique);
+
+        log.info("get stats from = {} end = {} uris = {} ids = {}",
+                parameters.get("start"), parameters.get("end"), parameters.get("uris"), parameters.get("unique"));
+
         return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 
