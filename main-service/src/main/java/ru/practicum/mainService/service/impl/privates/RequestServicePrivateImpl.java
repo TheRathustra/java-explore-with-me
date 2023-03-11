@@ -64,7 +64,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
             throw new InvalidRequestException("Event not published");
         }
 
-        if ((event.getParticipantLimit() <= event.getConfirmedRequests()) && event.getRequestModeration() &&
+        if ((event.getParticipantLimit() <= event.getConfirmedRequests()) &&
                     event.getParticipantLimit() > 0) {
             throw new InvalidRequestException("Event reached limit");
         }
@@ -79,8 +79,12 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
         request.setEvent(event);
         request.setCreated(LocalDateTime.now());
         request.setStatus(Status.PENDING);
-        if (!event.getRequestModeration())
+        if (!event.getRequestModeration()) {
             request.setStatus(Status.CONFIRMED);
+            Integer confirmedRequests = event.getConfirmedRequests();
+            event.setConfirmedRequests(confirmedRequests);
+            eventRepository.save(event);
+        }
 
         Request newRequest = repository.save(request);
 
