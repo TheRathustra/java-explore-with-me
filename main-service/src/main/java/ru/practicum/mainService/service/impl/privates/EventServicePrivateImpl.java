@@ -135,7 +135,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (eventDto.getRequestModeration() != null)
             event.setRequestModeration(eventDto.getRequestModeration());
         if (eventDto.getStateAction() != null)
-            if (eventDto.getStateAction() == StateAction.REJECT_EVENT) {
+            if (eventDto.getStateAction() == StateAction.REJECT_EVENT ||
+                    eventDto.getStateAction() == StateAction.CANCEL_REVIEW) {
                 event.setState(State.CANCELED);
             } else {
                 event.setState(State.PENDING);
@@ -152,7 +153,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public List<ParticipationRequestDto> getEventParticipants(Long userId, Long eventId) {
-        List<Request> requests = requestRepository.findAllByEventIdAndRequesterId(eventId, userId);
+        List<Request> requests = requestRepository.findAllByEventIdAndStatusIs(eventId, Status.CONFIRMED);
         return requests.stream().map(RequestMapper::requestToParticipationRequestDto).collect(Collectors.toList());
     }
 
