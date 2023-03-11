@@ -153,7 +153,17 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public List<ParticipationRequestDto> getEventParticipants(Long userId, Long eventId) {
-        List<Request> requests = requestRepository.findAllByEventIdAndStatusIs(eventId, Status.CONFIRMED);
+        User initiator = userService.getUserById(userId);
+        Optional<Event> eventOptional = repository.findById(eventId);
+        if (eventOptional.isEmpty()) {
+            throw new EventNotFoundException("Event with id=" + eventId + " was not found");
+        }
+
+        if (!eventOptional.get().getInitiator().equals(initiator)) {
+            throw new UserIsNotAnInitiatorOfEventException("user is not event initiator");
+        }
+
+        List<Request> requests = requestRepository.findAllByEventId(eventId);
         return requests.stream().map(RequestMapper::requestToParticipationRequestDto).collect(Collectors.toList());
     }
 

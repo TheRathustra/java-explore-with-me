@@ -16,4 +16,6 @@ public interface RequestRepositoryPublic extends JpaRepository<Request, Long> {
 
     List<Request> findAllByEventIdAndStatusIs(Long eventId, Status status);
 
+    List<Request> findAllByEventId(Long eventId);
+
 }
