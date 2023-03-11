@@ -83,6 +83,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto getEventByEventId(Long userId, Long eventId) {
+        User initiator = userService.getUserById(userId);
         Event event = repository.findByIdAndInitiatorId(eventId, userId);
         if (event == null) {
             throw new EventNotFoundException("Event with id=" + eventId + " was not found");
