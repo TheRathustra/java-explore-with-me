@@ -5,8 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ru.practicum.mainService.dto.event.EventFullDto;
 import ru.practicum.mainService.dto.event.EventMapper;
-import ru.practicum.mainService.dto.event.EventShortDto;
 import ru.practicum.mainService.dto.event.EventSpecs;
 import ru.practicum.mainService.error.exception.event.EventNotFoundException;
 import ru.practicum.mainService.model.Event;
@@ -34,7 +34,7 @@ public class EventServicePublicImpl implements EventServicePublic {
     }
 
     @Override
-    public List<EventShortDto> getEvents(String text, List<Long> categories,
+    public List<EventFullDto> getEvents(String text, List<Long> categories,
                                          Boolean paid, String rangeStart,
                                          String rangeEnd, Boolean onlyAvailable,
                                          String sort, Integer from, Integer size, HttpServletRequest request) {
@@ -54,11 +54,11 @@ public class EventServicePublicImpl implements EventServicePublic {
         Map<Long, Long> stats = eventStatsService.getStats(events, false);
         eventStatsService.setViews(stats, events);
 
-        return events.stream().map(EventMapper::entityToEventShortDto).collect(Collectors.toList());
+        return events.stream().map(EventMapper::entityToEventFullDto).collect(Collectors.toList());
     }
 
     @Override
-    public EventShortDto getEventById(Long eventId, HttpServletRequest request) {
+    public EventFullDto getEventById(Long eventId, HttpServletRequest request) {
 
         eventStatsService.sendStats(request);
 
@@ -71,7 +71,7 @@ public class EventServicePublicImpl implements EventServicePublic {
         Map<Long, Long> stats = eventStatsService.getStats(List.of(event), false);
         event.setViews(stats.get(eventId));
 
-        return EventMapper.entityToEventShortDto(event);
+        return EventMapper.entityToEventFullDto(event);
     }
 
 }

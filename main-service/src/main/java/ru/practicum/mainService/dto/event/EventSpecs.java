@@ -42,15 +42,15 @@ public class EventSpecs {
     }
 
     public static Specification<Event> byAnnotation(String text) {
-        return (root, query, cb) -> text == null ? null : cb.like(root.get("annotation"), "%" + text + "%");
+        return (root, query, cb) -> text == null ? null : cb.like(cb.upper(root.get("annotation")), "%" + text.toUpperCase() + "%");
     }
 
     public static Specification<Event> byDscription(String text) {
-        return (root, query, cb) -> text == null ? null : cb.like(root.get("description"), "%" + text + "%");
+        return (root, query, cb) -> text == null ? null : cb.like(cb.upper(root.get("description")), "%" + text.toUpperCase() + "%");
     }
 
     public static Specification<Event> byTitle(String text) {
-        return (root, query, cb) -> text == null ? null : cb.like(root.get("title"), "%" + text + "%");
+        return (root, query, cb) -> text == null ? null : cb.like(cb.upper(root.get("title")), "%" + text.toUpperCase() + "%");
     }
 
     public static Specification<Event> byPaid(Boolean paid) {
@@ -58,7 +58,7 @@ public class EventSpecs {
     }
 
     public static Specification<Event> byOnlyAvailable(Boolean onlyAvailable) {
-        return (root, query, cb) -> onlyAvailable == null || !onlyAvailable ? null :
+        return (root, query, cb) -> (onlyAvailable == null || !onlyAvailable) ? null :
                 cb.lessThanOrEqualTo(root.get("participantLimit"), root.get("confirmedRequests"));
     }
 

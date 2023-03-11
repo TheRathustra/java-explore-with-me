@@ -2,7 +2,7 @@ package ru.practicum.mainService.controller.publics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.mainService.dto.event.EventShortDto;
+import ru.practicum.mainService.dto.event.EventFullDto;
 import ru.practicum.mainService.service.api.publics.EventServicePublic;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ public class EventControllerPublic {
     }
 
     @GetMapping
-    public List<EventShortDto> getEvents(@RequestParam(name = "text", required = false) String text,
+    public List<EventFullDto> getEvents(@RequestParam(name = "text", required = false) String text,
                                    @RequestParam(name = "categories", required = false) List<Long> categories,
                                    @RequestParam(name = "paid", required = false) Boolean paid,
                                    @RequestParam(name = "rangeStart", required = false) String rangeStart,
@@ -41,7 +41,7 @@ public class EventControllerPublic {
     }
 
     @GetMapping(path = "/{id}")
-    public EventShortDto getEventById(@PathVariable(name = "id") Long id, HttpServletRequest request) {
+    public EventFullDto getEventById(@PathVariable(name = "id") Long id, HttpServletRequest request) {
         /*
         событие должно быть опубликовано
         информация о событии должна включать в себя количество просмотров и количество подтвержденных запросов

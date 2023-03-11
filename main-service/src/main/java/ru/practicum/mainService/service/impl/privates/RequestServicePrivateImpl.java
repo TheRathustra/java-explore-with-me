@@ -81,7 +81,10 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
         request.setStatus(Status.PENDING);
         if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
             request.setStatus(Status.CONFIRMED);
-            Integer confirmedRequests = event.getConfirmedRequests() + 1;
+            Integer confirmedRequests = event.getConfirmedRequests();
+            if (confirmedRequests == null)
+                confirmedRequests = 0;
+            confirmedRequests++;
             event.setConfirmedRequests(confirmedRequests);
             eventRepository.save(event);
         }
