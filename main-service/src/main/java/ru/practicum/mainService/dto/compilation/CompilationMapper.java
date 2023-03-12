@@ -1,6 +1,5 @@
 package ru.practicum.mainService.dto.compilation;
 
-import ru.practicum.mainService.dto.event.EventMapper;
 import ru.practicum.mainService.model.Compilation;
 
 import java.util.stream.Collectors;
@@ -13,7 +12,7 @@ public class CompilationMapper {
         dto.setPinned(entity.getPinned());
         dto.setTitle(entity.getTitle());
         dto.setEvents(entity.getEvents().stream()
-                .map(EventMapper::entityToEventShortDto)
+                .map(CompilationDto.EventShortDto::entityToEventShortDto)
                 .collect(Collectors.toSet()));
         return dto;
     }
@@ -22,7 +21,6 @@ public class CompilationMapper {
         Compilation compilation = new Compilation();
         compilation.setPinned(dto.getPinned());
         compilation.setTitle(dto.getTitle());
-
         return compilation;
     }
 

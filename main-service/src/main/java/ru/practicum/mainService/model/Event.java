@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,6 +24,7 @@ public class Event {
 
     @Column(name = "annotation")
     @Length(max = 2000)
+    @NotNull
     private String annotation;
 
     @ManyToOne
@@ -37,6 +39,7 @@ public class Event {
 
     @Column(name = "description")
     @Length(max = 7000)
+    @NotNull
     private String description;
 
     @Column(name = "event_date")
@@ -70,6 +73,7 @@ public class Event {
 
     @Column(name = "title")
     @Length(max = 120)
+    @NotNull
     private String title;
 
     @Transient

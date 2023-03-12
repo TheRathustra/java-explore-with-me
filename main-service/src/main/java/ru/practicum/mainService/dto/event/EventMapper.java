@@ -1,7 +1,5 @@
 package ru.practicum.mainService.dto.event;
 
-import ru.practicum.mainService.dto.category.CategoryMapper;
-import ru.practicum.mainService.dto.user.UserMapper;
 import ru.practicum.mainService.model.Event;
 import ru.practicum.mainService.model.Location;
 
@@ -14,10 +12,10 @@ public class EventMapper {
         EventShortDto dto = new EventShortDto();
         dto.setId(entity.getId());
         dto.setAnnotation(entity.getAnnotation());
-        dto.setCategory(CategoryMapper.entityToCategoryDto(entity.getCategory()));
+        dto.setCategory(EventShortDto.CategoryDto.entityToCategoryDto(entity.getCategory()));
         dto.setConfirmedRequests(entity.getConfirmedRequests());
         dto.setEventDate(entity.getEventDate());
-        dto.setInitiator(UserMapper.entityToUserShortDto(entity.getInitiator()));
+        dto.setInitiator(EventShortDto.UserShortDto.entityToUserShortDto(entity.getInitiator()));
         dto.setPaid(entity.getPaid());
         dto.setTitle(entity.getTitle());
         dto.setViews(entity.getViews());
@@ -45,12 +43,12 @@ public class EventMapper {
         EventFullDto dto = new EventFullDto();
         dto.setId(entity.getId());
         dto.setAnnotation(entity.getAnnotation());
-        dto.setCategory(CategoryMapper.entityToCategoryDto(entity.getCategory()));
+        dto.setCategory(EventFullDto.CategoryDto.entityToCategoryDto(entity.getCategory()));
         dto.setConfirmedRequests(entity.getConfirmedRequests());
         dto.setCreatedOn(entity.getCreatedOn().format(formatter));
         dto.setDescription(entity.getDescription());
         dto.setEventDate(entity.getEventDate().format(formatter));
-        dto.setInitiator(UserMapper.entityToUserShortDto(entity.getInitiator()));
+        dto.setInitiator(EventFullDto.UserShortDto.entityToUserShortDto(entity.getInitiator()));
         dto.setLocation(new Location(entity.getLat(), entity.getLon()));
         dto.setPaid(entity.getPaid());
         dto.setParticipantLimit(entity.getParticipantLimit());

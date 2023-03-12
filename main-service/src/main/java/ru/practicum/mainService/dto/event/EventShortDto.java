@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.mainService.dto.category.CategoryDto;
-import ru.practicum.mainService.dto.user.UserShortDto;
+import ru.practicum.mainService.model.Category;
+import ru.practicum.mainService.model.User;
 
 import java.time.LocalDateTime;
 
@@ -32,5 +32,41 @@ public class EventShortDto {
     private String title;
 
     private Long views;
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Setter
+    @Getter
+    public static class CategoryDto {
+
+        private Long id;
+
+        private String name;
+
+        public static CategoryDto entityToCategoryDto(Category entity) {
+            return new CategoryDto(entity.getId(),
+                    entity.getName());
+        }
+
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Setter
+    @Getter
+    public static class UserShortDto {
+
+        private Long id;
+
+        private String name;
+
+        public static UserShortDto entityToUserShortDto(User entity) {
+            UserShortDto dto = new UserShortDto();
+            dto.setId(entity.getId());
+            dto.setName(entity.getName());
+            return dto;
+        }
+
+    }
 
 }
