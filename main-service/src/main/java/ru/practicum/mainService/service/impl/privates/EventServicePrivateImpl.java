@@ -174,8 +174,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
                                                               EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
 
         EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult();
-        List<ParticipationRequestDto> confirmedRequests = new ArrayList<>();
-        List<ParticipationRequestDto> rejectedRequests = new ArrayList<>();
+        List<EventRequestStatusUpdateResult.ParticipationRequestDto> confirmedRequests = new ArrayList<>();
+        List<EventRequestStatusUpdateResult.ParticipationRequestDto> rejectedRequests = new ArrayList<>();
 
         Status newStatus = eventRequestStatusUpdateRequest.getStatus();
 
@@ -206,13 +206,13 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             request.setStatus(newStatus);
 
             if (newStatus == Status.CONFIRMED) {
-                confirmedRequests.add(RequestMapper.requestToParticipationRequestDto(request));
+                confirmedRequests.add(EventRequestStatusUpdateResult.ParticipationRequestDto.requestToParticipationRequestDto(request));
                 confirmed++;
                 event.setConfirmedRequests(confirmed);
                 limit++;
             }
             if (newStatus == Status.REJECTED)
-                rejectedRequests.add(RequestMapper.requestToParticipationRequestDto(request));
+                rejectedRequests.add(EventRequestStatusUpdateResult.ParticipationRequestDto.requestToParticipationRequestDto(request));
 
             if ((event.getParticipantLimit() > 0 && event.getRequestModeration())
                     && limit <= confirmed) {

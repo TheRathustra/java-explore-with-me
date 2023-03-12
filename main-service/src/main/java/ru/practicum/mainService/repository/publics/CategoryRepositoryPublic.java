@@ -6,6 +6,4 @@ import ru.practicum.mainService.model.Category;
 
 @Repository
 public interface CategoryRepositoryPublic extends JpaRepository<Category, Long> {
-
-
 }
