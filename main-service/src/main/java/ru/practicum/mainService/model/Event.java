@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class Event {
     private Long id;
 
     @Column(name = "annotation")
+    @Length(max = 2000)
     private String annotation;
 
     @ManyToOne
@@ -34,6 +36,7 @@ public class Event {
     private LocalDateTime createdOn;
 
     @Column(name = "description")
+    @Length(max = 7000)
     private String description;
 
     @Column(name = "event_date")
@@ -66,6 +69,7 @@ public class Event {
     private State state;
 
     @Column(name = "title")
+    @Length(max = 120)
     private String title;
 
     @Transient

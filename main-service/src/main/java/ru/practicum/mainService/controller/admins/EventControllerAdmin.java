@@ -26,6 +26,10 @@ public class EventControllerAdmin {
         this.validator = validator;
     }
 
+    /**
+     Эндпоинт возвращает полную информацию обо всех событиях подходящих под переданные условия
+     В случае, если по заданным фильтрам не найдено ни одного события, возвращает пустой список
+     */
     @GetMapping
     public List<EventFullDto> getEvents(@RequestParam(name = "users", required = false) List<Long> users,
                                   @RequestParam(name = "states", required = false) List<String> states,
@@ -34,23 +38,24 @@ public class EventControllerAdmin {
                                   @RequestParam(name = "rangeEnd", required = false) String rangeEnd,
                                   @RequestParam(name = "from", defaultValue = "0") Integer from,
                                   @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        //Эндпоинт возвращает полную информацию обо всех событиях подходящих под переданные условия
-        //В случае, если по заданным фильтрам не найдено ни одного события, возвращает пустой список
+
         log.info("get events users = {} states = {} categories = {} rangeStart = {} rangeEnd = {} from = {} size = {}",
                 users, states, categories, rangeStart, rangeEnd, from, size);
 
         return eventService.getEvents(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
+    /**
+     Редактирование данных любого события администратором. Валидация данных не требуется.
+     Обратите внимание:
+     дата начала изменяемого события должна быть не ранее чем за час от даты публикации. (Ожидается код ошибки 409)
+     событие можно публиковать, только если оно в состоянии ожидания публикации (Ожидается код ошибки 409)
+     событие можно отклонить, только если оно еще не опубликовано (Ожидается код ошибки 409)
+     */
     @PatchMapping(path = "/{eventId}")
     @Transactional
     public EventFullDto updateEvent(@PathVariable(name = "eventId") Long eventId,
                                     @RequestBody UpdateEventAdminRequest updateEventAdminRequest) {
-        /*Редактирование данных любого события администратором. Валидация данных не требуется. Обратите внимание:
-        дата начала изменяемого события должна быть не ранее чем за час от даты публикации. (Ожидается код ошибки 409)
-        событие можно публиковать, только если оно в состоянии ожидания публикации (Ожидается код ошибки 409)
-        событие можно отклонить, только если оно еще не опубликовано (Ожидается код ошибки 409)
-         */
         validator.validateEvent(updateEventAdminRequest);
         return eventService.updateEvent(eventId, updateEventAdminRequest);
     }

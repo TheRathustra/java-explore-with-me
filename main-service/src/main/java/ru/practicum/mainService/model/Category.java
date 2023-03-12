@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @NoArgsConstructor
@@ -20,6 +22,8 @@ public class Category {
     private Long id;
 
     @Column(name = "name")
+    @Length(max = 70)
+    @NotNull
     private String name;
 
 }

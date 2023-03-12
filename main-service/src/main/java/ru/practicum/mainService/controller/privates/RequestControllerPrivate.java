@@ -21,24 +21,26 @@ public class RequestControllerPrivate {
         this.requestService = requestService;
     }
 
+    /**
+     В случае, если по заданным фильтрам не найдено ни одной заявки, возвращает пустой список
+     */
     @GetMapping
     public List<ParticipationRequestDto> getUserRequests(@PathVariable(name = "userId") Long userId) {
-        //В случае, если по заданным фильтрам не найдено ни одной заявки, возвращает пустой список
         return requestService.getUserRequests(userId);
     }
 
+    /**
+     Нельзя добавить повторный запрос (Ожидается код ошибки 409)
+     Инициатор события не может добавить запрос на участие в своём событии (Ожидается код ошибки 409)
+     Нельзя участвовать в неопубликованном событии (Ожидается код ошибки 409)
+     Если у события достигнут лимит запросов на участие - необходимо вернуть ошибку (Ожидается код ошибки 409)
+     Если для события отключена пре-модерация запросов на участие, то запрос должен автоматически перейти в
+     состояние подтвержденного
+     */
     @PostMapping
     @Transactional
     public ResponseEntity<ParticipationRequestDto> addParticipationRequest(@PathVariable(name = "userId") Long userId,
                                                                           @RequestParam(name = "eventId") Long eventId) {
-        /*
-        нельзя добавить повторный запрос (Ожидается код ошибки 409)
-        инициатор события не может добавить запрос на участие в своём событии (Ожидается код ошибки 409)
-        нельзя участвовать в неопубликованном событии (Ожидается код ошибки 409)
-        если у события достигнут лимит запросов на участие - необходимо вернуть ошибку (Ожидается код ошибки 409)
-        если для события отключена пре-модерация запросов на участие, то запрос должен автоматически перейти в
-        состояние подтвержденного
-         */
         ParticipationRequestDto requestDto = requestService.addParticipationRequest(userId, eventId);
         return new ResponseEntity<>(requestDto, HttpStatus.CREATED);
     }

@@ -18,16 +18,20 @@ public class CategoryControllerPublic {
         this.categoryService = categoryService;
     }
 
+    /**
+     В случае, если по заданным фильтрам не найдено ни одной категории, возвращает пустой список
+     */
     @GetMapping()
     public List<CategoryDto> getCategories(@RequestParam(name = "from", defaultValue = "0") Integer from,
                                            @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        //В случае, если по заданным фильтрам не найдено ни одной категории, возвращает пустой список
         return categoryService.getCategories(from, size);
     }
 
+    /**
+     В случае, если категории с заданным id не найдено, возвращает статус код 404
+     */
     @GetMapping(path = "/{catId}")
     public CategoryDto getCategoryById(@PathVariable(name = "catId") Long catId) {
-        //В случае, если категории с заданным id не найдено, возвращает статус код 404
         return categoryService.getCategoryById(catId);
     }
 

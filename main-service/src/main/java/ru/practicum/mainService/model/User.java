@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @NoArgsConstructor
@@ -22,9 +24,13 @@ public class User {
     private Long id;
 
     @Column(name = "email")
+    @Length(max = 50)
+    @NotNull
     private String email;
 
     @Column(name = "name")
+    @Length(max = 50)
+    @NotNull
     private String name;
 
 }
