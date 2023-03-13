@@ -1,12 +1,11 @@
 package ru.practicum.client;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.lang.Nullable;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 public class BaseClient {
@@ -16,33 +15,35 @@ public class BaseClient {
         this.rest = rest;
     }
 
-    protected ResponseEntity<Object> get(String path, Map<String, Object> parameters) {
-        return makeAndSendRequest(HttpMethod.GET, path, parameters, null);
-    }
-
     protected <T> ResponseEntity<Object> post(String path, T body) {
-        return makeAndSendRequest(HttpMethod.POST, path, null, body);
+        return makeAndSendRequest(HttpMethod.POST, path, body, null);
     }
 
-    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, @Nullable Map<String, Object> parameters, @Nullable T body) {
+    protected ResponseEntity<Object> get(String path, @Nullable Map<String, Object> parameters) {
+        return makeAndSendRequest(HttpMethod.GET, path, null, parameters);
+    }
 
-        HttpEntity<T> requestEntity = null;
-        if (body != null) {
-            requestEntity = new HttpEntity<>(body);
-        }
+    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, @Nullable T body, @Nullable Map<String, Object> parameters) {
 
-        ResponseEntity<Object> response;
+        HttpEntity<T> requestEntity = new HttpEntity<>(body, defaultHeaders());
+        ResponseEntity<Object> statsServerResponse;
         try {
             if (parameters != null) {
-                response = rest.exchange(path, method, requestEntity, Object.class, parameters);
+                statsServerResponse = rest.exchange(path, method, requestEntity, Object.class, parameters);
             } else {
-                response = rest.exchange(path, method, requestEntity, Object.class);
+                statsServerResponse = rest.exchange(path, method, requestEntity, Object.class);
             }
         } catch (HttpStatusCodeException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
         }
-        return prepareGatewayResponse(response);
+        return prepareGatewayResponse(statsServerResponse);
+    }
 
+    private HttpHeaders defaultHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        return headers;
     }
 
     private static ResponseEntity<Object> prepareGatewayResponse(ResponseEntity<Object> response) {
@@ -58,4 +59,5 @@ public class BaseClient {
 
         return responseBuilder.build();
     }
+
 }

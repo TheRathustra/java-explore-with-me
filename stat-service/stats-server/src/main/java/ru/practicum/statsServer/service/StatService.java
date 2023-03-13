@@ -9,6 +9,6 @@ public interface StatService {
 
     Hit add(Hit hit);
 
-    List<Hit> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique);
+    List<Hit> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique);
 
 }

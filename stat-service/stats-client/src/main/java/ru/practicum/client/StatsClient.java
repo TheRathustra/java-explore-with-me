@@ -1,5 +1,6 @@
 package ru.practicum.client;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -11,37 +12,40 @@ import ru.practicum.statsDto.dto.HitDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class StatsClient extends BaseClient {
 
-    private static final String API_PREFIX_HIT = "/hit";
-
-    private static final String API_PREFIX_STATS = "/stats";
-
     @Autowired
-    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatsClient(@Value("${stats-service.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                         .build()
         );
+        log.info("creating stats with url = {}", serverUrl);
     }
 
     public ResponseEntity<Object> sendHit(HitDto hitDto) {
-        return post(API_PREFIX_HIT, hitDto);
+        return post("/hit", hitDto);
     }
 
-    public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
+    public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> parameters = Map.of(
-                "start", start.format(formatter),
-                "end", end.format(formatter),
-                "uris", uris,
+                "start",  start.format(formatter),
+                "end",    end.format(formatter),
+                "uris",   uris,
                 "unique", unique);
-        return get(API_PREFIX_STATS + "?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
+
+        log.info("get stats from = {} end = {} uris = {} ids = {}",
+                parameters.get("start"), parameters.get("end"), parameters.get("uris"), parameters.get("unique"));
+
+        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 
 }

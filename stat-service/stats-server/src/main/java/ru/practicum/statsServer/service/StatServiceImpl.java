@@ -22,7 +22,7 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public List<Hit> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+    public List<Hit> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         List<Hit> hits;
         if (unique) {
             if (uris.isEmpty()) {
