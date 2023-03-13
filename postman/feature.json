@@ -28,7 +28,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Gilberto Ferry\",\"email\":\"Ruby.White93@yahoo.com\"}",
+          "raw": "{\"name\":\"New user for feature\",\"email\":\"NewUser1@gmail.com\"}",
           "options": {
             "raw": {
               "language": "json"
@@ -70,7 +70,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Movies25\"}",
+          "raw": "{\"name\":\"SomeCategory\"}",
           "options": {
             "raw": {
               "language": "json"
@@ -112,7 +112,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"annotation\": \"Maxime quia officiis. Rerum vel voluptates animi. Rerum similique quas sapiente laudantium molestias aut delectus repudiandae. Eum pariatur quia.\",\r\n    \"category\": 1,\r\n    \"description\": \"Reprehenderit earum atqueet rerum. Quisquam autem officia dolores consequatur voluptas consequatur necessitatibus reiciendis. Aliquamatque ipsa ex eum. Est consequatur debitis molestiae. rNam tenetur quasi alias perspiciatis non voluptatibus non. Cumque quod aut nihil. Aspernatur error et voluptatem est. Nemo recusandae aut recusandae magni labore error. rVero expedita ipsa officia dolor eos non saepe illo alias. Dolor voluptatum ex temporibus est dolore libero doloremque est. Perspiciatis a eius sunt et iure. Incidunt quia est quia esse et dolores dignissimos alias.\",\r\n    \"eventDate\": \"{{currentdate}}\",\r\n    \"location\": {\r\n        \"lat\": -78.6338,\r\n        \"lon\": -176.3466\r\n    },\r\n    \"paid\": \"false\",\r\n    \"participantLimit\": \"1\",\r\n    \"requestModeration\": \"true\",\r\n    \"title\": \"Minima qui eum.\"\r\n}",
+          "raw": "{\r\n    \"annotation\": \"Maxime quia officiis. Rerum vel voluptates animi. Rerum similique quas sapiente laudantium molestias aut delectus repudiandae. Eum pariatur quia.\",\r\n    \"category\": 55,\r\n    \"description\": \"Reprehenderit earum atqueet rerum. Quisquam autem officia dolores consequatur voluptas consequatur necessitatibus reiciendis. Aliquamatque ipsa ex eum. Est consequatur debitis molestiae. rNam tenetur quasi alias perspiciatis non voluptatibus non. Cumque quod aut nihil. Aspernatur error et voluptatem est. Nemo recusandae aut recusandae magni labore error. rVero expedita ipsa officia dolor eos non saepe illo alias. Dolor voluptatum ex temporibus est dolore libero doloremque est. Perspiciatis a eius sunt et iure. Incidunt quia est quia esse et dolores dignissimos alias.\",\r\n    \"eventDate\": \"{{currentdate}}\",\r\n    \"location\": {\r\n        \"lat\": -78.6338,\r\n        \"lon\": -176.3466\r\n    },\r\n    \"paid\": \"false\",\r\n    \"participantLimit\": \"5\",\r\n    \"requestModeration\": \"true\",\r\n    \"title\": \"Minima qui eum.\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -120,13 +120,13 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/users/1/events",
+          "raw": "{{baseUrl}}/users/62/events",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "users",
-            "1",
+            "62",
             "events"
           ]
         }
@@ -155,7 +155,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"text\": \"Comment text\"\r\n}",
+          "raw": "{\r\n    \"text\": \"Very interesting comment\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -163,15 +163,15 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/users/1/events/1/comments",
+          "raw": "{{baseUrl}}/users/62/events/38/comments",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "users",
-            "1",
+            "62",
             "events",
-            "1",
+            "38",
             "comments"
           ]
         }
@@ -208,14 +208,14 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/admin/events/1",
+          "raw": "{{baseUrl}}/admin/events/38",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "admin",
             "events",
-            "1"
+            "38"
           ]
         }
       },
@@ -243,7 +243,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"text\": \"Comment text\"\r\n}",
+          "raw": "{\r\n    \"text\": \"Comment from user 1\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -251,15 +251,15 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/users/1/events/1/comments",
+          "raw": "{{baseUrl}}/users/62/events/38/comments",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "users",
-            "1",
+            "62",
             "events",
-            "1",
+            "38",
             "comments"
           ]
         }
@@ -300,13 +300,13 @@
           "raw": ""
         },
         "url": {
-          "raw": "{{baseUrl}}/events/1/comments",
+          "raw": "{{baseUrl}}/events/62/comments",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "events",
-            "1",
+            "62",
             "comments"
           ]
         }
@@ -335,7 +335,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Yolanda Morissette\",\"email\":\"Toni.Gutkowski@yahoo.com\"}",
+          "raw": "{\"name\":\"Another user for feature\",\"email\":\"NewUser2@gmail.com\"}",
           "options": {
             "raw": {
               "language": "json"
@@ -376,15 +376,15 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/users/2/events/1/comments/1",
+          "raw": "{{baseUrl}}/users/63/events/38/comments/1",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "users",
-            "2",
+            "63",
             "events",
-            "1",
+            "38",
             "comments",
             "1"
           ]
@@ -411,15 +411,15 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/users/1/events/1/comments/1",
+          "raw": "{{baseUrl}}/users/62/events/38/comments/1",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "users",
-            "1",
+            "62",
             "events",
-            "1",
+            "38",
             "comments",
             "1"
           ]
@@ -457,15 +457,15 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/users/2/events/1/comments",
+          "raw": "{{baseUrl}}/users/63/events/38/comments",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "users",
-            "2",
+            "63",
             "events",
-            "1",
+            "38",
             "comments"
           ]
         }
