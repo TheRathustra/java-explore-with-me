@@ -14,4 +14,13 @@ public class CommentMapper {
         return dto;
     }
 
+    public static CommentShortDto entityToCommentShortDto(Comment entity) {
+        CommentShortDto dto = new CommentShortDto();
+        dto.setId(entity.getId());
+        dto.setText(entity.getText());
+        dto.setAuthor(CommentShortDto.UserShortDto.entityToUserShortDto(entity.getAuthor()));
+        dto.setEvent(CommentShortDto.EventShortDto.entityToEventShortDto(entity.getEvent()));
+        return dto;
+    }
+
 }

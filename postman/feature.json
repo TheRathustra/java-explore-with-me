@@ -300,13 +300,13 @@
           "raw": ""
         },
         "url": {
-          "raw": "{{baseUrl}}/events/62/comments",
+          "raw": "{{baseUrl}}/events/38/comments",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "events",
-            "62",
+            "38",
             "comments"
           ]
         }
@@ -491,13 +491,143 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/comments/2",
+          "raw": "{{baseUrl}}/admin/comments/2",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
+            "admin",
             "comments",
             "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create comment 1",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 2xx и данные в формате json\", function() {\r",
+              "    pm.response.to.be.success; // код ответа должен быть равен 200 OK\r",
+              "    pm.response.to.be.withBody; // ответ должен содержать тело\r",
+              "    pm.response.to.be.json; // и тело ответа должно быть в формате JSON\r",
+              "}); "
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"Comment from user 1\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/62/events/38/comments",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "62",
+            "events",
+            "38",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create comment 2",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 2xx и данные в формате json\", function() {\r",
+              "    pm.response.to.be.success; // код ответа должен быть равен 200 OK\r",
+              "    pm.response.to.be.withBody; // ответ должен содержать тело\r",
+              "    pm.response.to.be.json; // и тело ответа должно быть в формате JSON\r",
+              "}); "
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"Comment from user 1\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/62/events/38/comments",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "62",
+            "events",
+            "38",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all comments",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const body = pm.response.json(); // получаем тело ответа в формате JSON\r",
+              "\r",
+              "pm.test(\"Ответ должен содержать код статуса 2xx и данные в формате json\", function() {\r",
+              "    pm.response.to.be.success; // код ответа должен быть равен 200 OK\r",
+              "    pm.response.to.be.withBody; // ответ должен содержать тело\r",
+              "    pm.response.to.be.json; // и тело ответа должно быть в формате JSON\r",
+              "    pm.expect(body).is.an('array');\r",
+              "    pm.expect(body.length).to.be.gte(2);\r",
+              "}); \r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/admin/comments",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "admin",
+            "comments"
           ]
         }
       },
