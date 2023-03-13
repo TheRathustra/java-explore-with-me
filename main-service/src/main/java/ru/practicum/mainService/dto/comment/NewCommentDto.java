@@ -8,11 +8,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class NewCommentDto {
-
-    private Long author;
-
-    private Long event;
-
     private String text;
-
 }

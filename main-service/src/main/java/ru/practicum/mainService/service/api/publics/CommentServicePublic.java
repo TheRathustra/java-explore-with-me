@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface CommentServicePublic {
 
-    CommentDto create(NewCommentDto comment);
+    CommentDto create(Long userId, Long eventId, NewCommentDto comment);
 
-    List<CommentDto> getEventComments(Long eventId);
+    List<CommentDto> getEventComments(Long eventId, Integer from, Integer size);
+
+    void deleteComment(Long userId, Long eventId, Long commentId);
 
 }
