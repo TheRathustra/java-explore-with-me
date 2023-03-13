@@ -9,9 +9,11 @@ import ru.practicum.mainService.dto.comment.CommentMapper;
 import ru.practicum.mainService.dto.comment.NewCommentDto;
 import ru.practicum.mainService.error.exception.comment.CommentNotFoundException;
 import ru.practicum.mainService.error.exception.comment.NotAuthorOfCommentException;
+import ru.practicum.mainService.error.exception.event.EventIncorrectState;
 import ru.practicum.mainService.error.exception.event.EventNotFoundException;
 import ru.practicum.mainService.model.Comment;
 import ru.practicum.mainService.model.Event;
+import ru.practicum.mainService.model.State;
 import ru.practicum.mainService.model.User;
 import ru.practicum.mainService.repository.publics.CommentRepositoryPublic;
 import ru.practicum.mainService.repository.publics.EventRepositoryPublic;
@@ -48,6 +50,10 @@ public class CommentServicePublicImpl implements CommentServicePublic {
         }
 
         Event event = eventOptional.get();
+
+        if (event.getState() != State.PUBLISHED) {
+            throw new EventIncorrectState("Event must be published");
+        }
 
         Comment newComment = new Comment()
                 .setAuthor(user)

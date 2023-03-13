@@ -11,6 +11,9 @@ import ru.practicum.mainService.error.ApiError;
 import ru.practicum.mainService.error.exception.comment.CommentNotFoundException;
 import ru.practicum.mainService.error.exception.comment.CommentValidationException;
 import ru.practicum.mainService.error.exception.comment.NotAuthorOfCommentException;
+import ru.practicum.mainService.error.exception.event.EventIncorrectState;
+import ru.practicum.mainService.error.exception.event.EventNotFoundException;
+import ru.practicum.mainService.error.exception.user.UserNotFoundException;
 
 @RestControllerAdvice(assignableTypes = {CommentControllerPublic.class, CommentControllerAdmin.class})
 public class CommentErrorHandler {
@@ -42,6 +45,34 @@ public class CommentErrorHandler {
         error.setReason("For the requested operation the conditions are not met.");
         error.setStatus(HttpStatus.BAD_REQUEST);
 
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiError> handleEventIncorrectState(final EventIncorrectState e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("For the requested operation the conditions are not met.");
+        error.setStatus(HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiError> handleUserNotFoundException(final UserNotFoundException e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("For the requested operation the conditions are not met.");
+        error.setStatus(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiError> handleEventNotFoundException(final EventNotFoundException e) {
+        ApiError error = new ApiError(e.getMessage());
+        error.setReason("The required object was not found.");
+        error.setStatus(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
